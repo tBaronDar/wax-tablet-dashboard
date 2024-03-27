@@ -1,4 +1,4 @@
-import SetupForm from "@/components/setup/setup-form";
+import SetupForm from "@/components/home-page/setup-form";
 
 function SetupPage() {
   return (
