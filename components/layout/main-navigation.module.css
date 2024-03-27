@@ -1,0 +1,20 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  background-color: antiquewhite;
+  align-items: center;
+  width: 100%;
+  height: 25vh;
+}
+
+.navigation ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  list-style: none;
+  align-items: center;
+}
+
+.navigation li {
+  margin: var(--size-16);
+}
