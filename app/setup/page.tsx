@@ -1,11 +1,7 @@
 import SetupForm from "@/components/home-page/setup-form";
 
-function SetupPage() {
-  return (
-    <section>
-      <SetupForm />
-    </section>
-  );
+async function SetupPage() {
+  return <section></section>;
 }
 
 export default SetupPage;

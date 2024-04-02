@@ -1,17 +1,21 @@
 "use server";
-import ServerContext from "@/store";
-import { MongoClient } from "mongodb";
-import { useContext } from "react";
 
-export async function mongoGet(username: string, password: string) {
+import { MongoClient } from "mongodb";
+import { readJsonData } from "./get-file-data";
+
+export async function mongoGet() {
+  const setupData = await readJsonData();
+  const { username, password, collection, database } = setupData;
+
   const mongodbUrl = `mongodb+srv://${username}:${password}@generic.eucy2zz.mongodb.net/?retryWrites=true&w=majority&appName=Generic`;
   const client = await MongoClient.connect(mongodbUrl);
-  const db = client.db("portfolio-dev");
+  const db = client.db(database);
+
+  const databases = (await db.admin().listDatabases()).databases;
+  console.log(databases);
   const collections = await db.listCollections().toArray();
-  const messages = await db.collection("messages").find().toArray();
+  const messages = await db.collection(collection).find().toArray();
   client.close();
 
-  const context = useContext(ServerContext);
-
-  return { messages, collections };
+  return { messages, collections, databases };
 }

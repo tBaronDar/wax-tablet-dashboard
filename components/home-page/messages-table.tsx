@@ -1,49 +1,21 @@
-"use client";
-import { mongoGet } from "@/lib/mongoDB-handler";
-import ServerContext from "@/store";
-import { useContext, useEffect, useState } from "react";
+//"use client";
+//import { useState } from "react";
 
-function MessagesTable() {
-  const [data, setData] = useState({
-    collections: [],
-    messages: [],
-    message: "",
-  });
+function MessagesTable({ data }) {
+  //const [status, setStatus] = useState("loading");
 
-  const [status, setStatus] = useState("loading");
-
-  const context = useContext(ServerContext);
-  const username = context.username;
-  const password = context.password;
-
-  useEffect(() => {
-    async function messagesGetter(username: string, password: string) {
-      const fetchedData = await mongoGet(username, password);
-      setData({
-        collections: fetchedData.collections,
-        messages: fetchedData.messages,
-        message: "",
-      });
-    }
-    if (!username || !password || username === "" || password === "") {
-      setStatus("no-data");
-      //setData({ collections: [], messages: [], message: "rourou" });
-      return;
-    }
-    setStatus("loading");
-    messagesGetter(username, password);
-    setStatus("success");
-  }, [username, password]);
-
-  const showtable: boolean =
-    data.collections.length > 0 && data.messages.length > 0;
-
-  if (status === "no-data") {
-    return <h2>Please insert data</h2>;
+  let showtable: boolean = false;
+  if (data.collections.length > 0 && data.messages.length > 0) {
+    showtable = true;
+    //setStatus("success");
   }
-  if (status === "loading") {
-    return <h2>Loading, please wait...</h2>;
-  }
+
+  // if (status === "no-data") {
+  //   return <h2>Please insert data</h2>;
+  // }
+  // if (status === "loading") {
+  //   return <h2>Loading, please wait...</h2>;
+  // }
 
   return (
     <section>

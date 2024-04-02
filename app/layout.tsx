@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import MainNavigation from "@/components/layout/main-navigation";
-import { ServerContextProvider } from "@/store";
 
 import "./globals.css";
 
@@ -15,13 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ServerContextProvider>
-      <html lang="en">
-        <body>
-          <MainNavigation />
-          <main>{children}</main>
-        </body>
-      </html>
-    </ServerContextProvider>
+    <html lang="en">
+      <body>
+        <MainNavigation />
+        <main>{children}</main>
+      </body>
+    </html>
   );
 }

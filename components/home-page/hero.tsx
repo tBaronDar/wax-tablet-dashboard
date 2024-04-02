@@ -1,4 +1,4 @@
-import classes from "./home-page.module.css";
+import classes from "./hero.module.css";
 
 function Hero() {
   return (

@@ -1,68 +1,44 @@
 "use client";
-import ServerContext from "@/store";
-import { useContext, useState } from "react";
+import { useState } from "react";
 
-function SetupForm() {
-  const context = useContext(ServerContext);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+import { getData } from "@/lib/get-formdata";
+import { readJsonData } from "@/lib/get-file-data";
 
-  function submitHandler(event: any) {
-    event.preventDefault();
-
-    // Validation
-
-    context.getCredentials(username, password);
-  }
-
-  function changeCredentialsHandler() {
-    context.getCredentials("", "");
-    setUsername("");
-    setPassword("");
-  }
-
+function SetupForm({ setupData }) {
   function dropdownHandler() {}
 
   return (
     <section>
       <h1>Setup your database</h1>
-      <form onSubmit={submitHandler}>
+      <form action={getData}>
         <div>
           <div>
             <label htmlFor="username">Username</label>
             <input
-              value={username}
               id="username"
+              name="username"
               type="text"
-              onChange={(event) => {
-                setUsername(event.target.value);
-              }}
+              value={setupData.username}
             />
           </div>
           <div>
             <label htmlFor="password">Password</label>
             <input
-              value={password}
               id="password"
+              name="password"
               type="text"
-              onChange={(event) => {
-                setPassword(event.target.value);
-              }}
+              value={setupData.password}
             />
           </div>
         </div>
         <div className="dropdown">
-          <button onClick={dropdownHandler} className="dropbtn">
-            Dropdown
-          </button>
+          <button className="dropbtn">Dropdown</button>
           <div id="myDropdown" className="dropdown-content">
             {/* {context.<a href="#">Link 1</a>} */}
           </div>
         </div>
         <button type="submit">Send</button>
-        <button type="button" onClick={changeCredentialsHandler}>
-          Change
-        </button>
+        <button type="button">Change</button>
       </form>
     </section>
   );
