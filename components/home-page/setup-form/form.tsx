@@ -1,12 +1,9 @@
 "use client";
-import { useState } from "react";
 
 import { getData } from "@/lib/get-formdata";
-import { readJsonData } from "@/lib/get-file-data";
+import Dropdown from "./dropdown";
 
-function SetupForm({ setupData }) {
-  function dropdownHandler() {}
-
+function SetupForm({ username, password, collections, databases }) {
   return (
     <section>
       <h1>Setup your database</h1>
@@ -18,7 +15,7 @@ function SetupForm({ setupData }) {
               id="username"
               name="username"
               type="text"
-              value={setupData.username}
+              defaultValue={username}
             />
           </div>
           <div>
@@ -27,16 +24,20 @@ function SetupForm({ setupData }) {
               id="password"
               name="password"
               type="text"
-              value={setupData.password}
+              defaultValue={password}
             />
           </div>
         </div>
-        <div className="dropdown">
-          <button className="dropbtn">Dropdown</button>
-          <div id="myDropdown" className="dropdown-content">
-            {/* {context.<a href="#">Link 1</a>} */}
-          </div>
-        </div>
+        <Dropdown>
+          {collections.map((name: string) => {
+            return <p key={name}>{name}</p>;
+          })}
+        </Dropdown>
+        <Dropdown>
+          {databases.map((name: string) => {
+            return <p key={name}>{name}</p>;
+          })}
+        </Dropdown>
         <button type="submit">Send</button>
         <button type="button">Change</button>
       </form>

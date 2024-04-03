@@ -11,11 +11,26 @@ export async function mongoGet() {
   const client = await MongoClient.connect(mongodbUrl);
   const db = client.db(database);
 
-  const databases = (await db.admin().listDatabases()).databases;
-  console.log(databases);
+  //get all the db names
+  const databasesObjArray = (await db.admin().listDatabases()).databases;
+  const databasesNames: string[] = [];
+
+  databasesObjArray.map((obj) => {
+    databasesNames.push(`${obj.name}`);
+  });
+
+  //get all the collections names.
   const collections = await db.listCollections().toArray();
+  const collectionsNames = [];
+
+  collections.map((obj) => {
+    collectionsNames.push(`${obj.name}`);
+  });
+  console.log(collectionsNames);
+
+  //get all messages
   const messages = await db.collection(collection).find().toArray();
   client.close();
 
-  return { messages, collections, databases };
+  return { messages, collectionsNames, databasesNames };
 }

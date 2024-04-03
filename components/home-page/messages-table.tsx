@@ -1,11 +1,11 @@
 //"use client";
 //import { useState } from "react";
 
-function MessagesTable({ data }) {
+function MessagesTable({ messages }) {
   //const [status, setStatus] = useState("loading");
 
   let showtable: boolean = false;
-  if (data.collections.length > 0 && data.messages.length > 0) {
+  if (messages.length > 0) {
     showtable = true;
     //setStatus("success");
   }
@@ -32,9 +32,9 @@ function MessagesTable({ data }) {
             </tr>
           </thead>
           <tbody>
-            {data.messages.map((message) => (
+            {messages.map((message) => (
               <tr key={message._id}>
-                <td>{data.messages.indexOf(message) + 1}</td>
+                <td>{messages.indexOf(message) + 1}</td>
                 <td>{message.name}</td>
                 <td>{message.email}</td>
                 <td>{message.message}</td>
