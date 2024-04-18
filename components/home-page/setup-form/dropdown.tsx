@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 function Dropdown({ children, selectedValue }) {
-	const [styles, setStyles] = useState({ display: "block" });
+	const [styles, setStyles] = useState({ display: "none" });
 
 	function clickHandler() {
 		if (styles.display === "none") {
@@ -13,7 +13,7 @@ function Dropdown({ children, selectedValue }) {
 			setStyles({ display: "none" });
 		}
 	}
-	const stylesObj = { display: "block" };
+	//const stylesObj = { display: "block" };
 
 	return (
 		<div>

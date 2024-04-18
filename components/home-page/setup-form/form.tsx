@@ -21,53 +21,50 @@ function SetupForm({ username, password, collections, databases }) {
 	console.log("run form");
 
 	return (
-		<>
+		<form action={getCreds}>
 			<h1>Setup your database</h1>
-			<form action={getCreds}>
+			<div>
 				<div>
-					<div>
-						<label htmlFor="username">Username</label>
-						<input
-							id="username"
-							name="username"
-							type="text"
-							defaultValue={username}
-						/>
-					</div>
-					<div>
-						<label htmlFor="password">Password</label>
-						<input
-							id="password"
-							name="password"
-							type="text"
-							defaultValue={password}
-						/>
-					</div>
+					<label htmlFor="username">Username</label>
+					<input
+						id="username"
+						name="username"
+						type="text"
+						defaultValue={username}
+					/>
 				</div>
-
-				<Dropdown selectedValue={selectedCollection}>
-					{collections.map((name: string) => {
-						return (
-							<p key={name} onClick={collectionSelectHandler.bind(null, name)}>
-								{name}
-							</p>
-						);
-					})}
-				</Dropdown>
-
-				<Dropdown selectedValue={selectedDatabase}>
-					{databases.map((name: string) => {
-						return (
-							<p key={name} onClick={databaseSelectHandler.bind(null, name)}>
-								{name}
-							</p>
-						);
-					})}
-				</Dropdown>
+				<div>
+					<label htmlFor="password">Password</label>
+					<input
+						id="password"
+						name="password"
+						type="text"
+						defaultValue={password}
+					/>
+				</div>
 				<button type="submit">Connect</button>
-				<button type="button">Change</button>
-			</form>
-		</>
+			</div>
+
+			<Dropdown selectedValue={selectedDatabase}>
+				{databases.map((name: string) => {
+					return (
+						<p key={name} onClick={databaseSelectHandler.bind(null, name)}>
+							{name}
+						</p>
+					);
+				})}
+			</Dropdown>
+
+			<Dropdown selectedValue={selectedCollection}>
+				{collections.map((name: string) => {
+					return (
+						<p key={name} onClick={collectionSelectHandler.bind(null, name)}>
+							{name}
+						</p>
+					);
+				})}
+			</Dropdown>
+		</form>
 	);
 }
 

@@ -38,6 +38,17 @@ export async function mongoConnectionHandler(database: string) {
 	return { collectionsNames, databasesNames };
 }
 
+export async function mongoDatabaseGetter() {
+	const client = await mongoConnector();
+	const db = client.db();
+	const databasesObjArray = (await db.admin().listDatabases()).databases;
+	const databasesNames: string[] = [];
+
+	databasesObjArray.map((obj) => {
+		databasesNames.push(`${obj.name}`);
+	});
+}
+
 export async function mongoMessagesGetter(
 	database: string,
 	collection: string

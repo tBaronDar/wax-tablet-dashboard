@@ -2,25 +2,18 @@
 
 import { readJsonData } from "@/lib/config-file-reader";
 import { mongoMessagesGetter } from "@/lib/mongoDB-handler";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-function MessagesTable({ sss }) {
+function MessagesTable() {
 	const [messages, setMessages] = useState([]);
-	//const messages = messagesGetter();
 
-	let collection: string, database: string;
-	useEffect(() => {
-		async function jsonReader() {
-			const setupData = await readJsonData();
-			collection = setupData.collection;
-			database = setupData.database;
+	async function refreshHandler() {
+		const setupData = await readJsonData();
+		const { database, collection } = setupData;
 
-			const readMessages = await mongoMessagesGetter(database, collection);
-			setMessages(readMessages);
-		}
-		console.log("table running");
-		jsonReader();
-	}, [sss, collection, database]);
+		const readMessages = await mongoMessagesGetter(database, collection);
+		setMessages(readMessages);
+	}
 
 	let showtable: boolean = false;
 	if (messages.length > 0) {
@@ -38,6 +31,9 @@ function MessagesTable({ sss }) {
 	return (
 		<section>
 			<h1>This are the messages</h1>
+			<button type="button" onClick={refreshHandler}>
+				Refresh
+			</button>
 			{showtable && (
 				<table>
 					<thead>

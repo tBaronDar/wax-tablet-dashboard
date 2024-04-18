@@ -5,7 +5,7 @@ import SetupForm from "@/components/home-page/setup-form/form";
 import { readJsonData } from "@/lib/config-file-reader";
 import {
 	mongoConnectionHandler,
-	mongoMessagesGetter,
+	mongoDatabaseGetter,
 } from "@/lib/mongoDB-handler";
 
 async function HomePage() {
@@ -16,24 +16,23 @@ async function HomePage() {
 	const mongoData = await mongoConnectionHandler(defDatabase);
 	const { collectionsNames, databasesNames } = mongoData;
 
+	const databasesArray = await mongoDatabaseGetter();
+	console.log(databasesArray);
+
 	let usedDb = password;
 	if (database === "" || !database) {
 		usedDb = defDatabase;
 	}
 
-	const messages = await mongoMessagesGetter(usedDb, collection);
-
-	console.log("&&&&&&&&&&&&&&&&");
 	return (
 		<section>
-			<Hero />
 			<SetupForm
 				username={username}
 				password={password}
 				collections={collectionsNames}
 				databases={databasesNames}
 			/>
-			<MessagesTable sss={collection} />
+			<MessagesTable />
 		</section>
 	);
 }
