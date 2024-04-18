@@ -1,25 +1,29 @@
 "use client";
 
 import { useState } from "react";
-import { getData } from "@/lib/get-formdata";
+import { dropdownSelector, getCreds } from "@/lib/config-editor";
 import Dropdown from "./dropdown";
 
 function SetupForm({ username, password, collections, databases }) {
 	const [selectedCollection, setSelectedCollection] = useState("Select one");
 	const [selectedDatabase, setSelectedDatabase] = useState("Select one");
 
-	function collectionSelectHandler(name: string) {
+	async function collectionSelectHandler(name: string) {
 		setSelectedCollection(name);
+		await dropdownSelector("collection", name);
 	}
 
-	function databaseSelectHandler(name: string) {
+	async function databaseSelectHandler(name: string) {
 		setSelectedDatabase(name);
+		await dropdownSelector("database", name);
 	}
+
+	console.log("run form");
 
 	return (
-		<section>
+		<>
 			<h1>Setup your database</h1>
-			<form action={getData}>
+			<form action={getCreds}>
 				<div>
 					<div>
 						<label htmlFor="username">Username</label>
@@ -40,7 +44,7 @@ function SetupForm({ username, password, collections, databases }) {
 						/>
 					</div>
 				</div>
-				//collection dropdown list
+
 				<Dropdown selectedValue={selectedCollection}>
 					{collections.map((name: string) => {
 						return (
@@ -50,7 +54,7 @@ function SetupForm({ username, password, collections, databases }) {
 						);
 					})}
 				</Dropdown>
-				//database dropdown list
+
 				<Dropdown selectedValue={selectedDatabase}>
 					{databases.map((name: string) => {
 						return (
@@ -60,10 +64,10 @@ function SetupForm({ username, password, collections, databases }) {
 						);
 					})}
 				</Dropdown>
-				<button type="submit">Send</button>
+				<button type="submit">Connect</button>
 				<button type="button">Change</button>
 			</form>
-		</section>
+		</>
 	);
 }
 
