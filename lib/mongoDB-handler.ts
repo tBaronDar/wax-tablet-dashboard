@@ -46,7 +46,17 @@ export async function mongoMessagesGetter(
 	//get all messages
 	const db = client.db(database);
 	const messages = db.collection(collection).find();
-	const messagesArray = await messages.toArray();
+	const messagesComplexArray = await messages.toArray();
+	const messagesArray = [];
+
+	messagesComplexArray.map((message) =>
+		messagesArray.push({
+			name: message.name,
+			email: message.email,
+			message: message.message,
+			id: message._id.toString(),
+		})
+	);
 	client.close();
 
 	return messagesArray;

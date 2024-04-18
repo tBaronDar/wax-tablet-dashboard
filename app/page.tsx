@@ -33,11 +33,7 @@ async function HomePage() {
 				collections={collectionsNames}
 				databases={databasesNames}
 			/>
-			<MessagesTable
-				messages={messages}
-				collection={collection}
-				database={database}
-			/>
+			<MessagesTable sss={collection} />
 		</section>
 	);
 }

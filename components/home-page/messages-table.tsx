@@ -1,13 +1,26 @@
 "use client";
 
-import { useEffect } from "react";
+import { readJsonData } from "@/lib/config-file-reader";
+import { mongoMessagesGetter } from "@/lib/mongoDB-handler";
+import { useEffect, useState } from "react";
 
-function MessagesTable({ messages, collection, database }) {
+function MessagesTable({ sss }) {
+	const [messages, setMessages] = useState([]);
 	//const messages = messagesGetter();
 
+	let collection: string, database: string;
 	useEffect(() => {
+		async function jsonReader() {
+			const setupData = await readJsonData();
+			collection = setupData.collection;
+			database = setupData.database;
+
+			const readMessages = await mongoMessagesGetter(database, collection);
+			setMessages(readMessages);
+		}
 		console.log("table running");
-	}, [messages, collection, database]);
+		jsonReader();
+	}, [sss, collection, database]);
 
 	let showtable: boolean = false;
 	if (messages.length > 0) {
@@ -38,7 +51,7 @@ function MessagesTable({ messages, collection, database }) {
 					</thead>
 					<tbody>
 						{messages.map((message) => (
-							<tr key={message._id}>
+							<tr key={message.id}>
 								<td>{messages.indexOf(message) + 1}</td>
 								<td>{message.name}</td>
 								<td>{message.email}</td>
