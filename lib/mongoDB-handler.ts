@@ -1,28 +1,32 @@
 "use server";
 
 import { MongoClient } from "mongodb";
-import { readJsonData } from "./config-file-reader";
+import { readJsonData } from "./config-editor";
 
 async function mongoConnector() {
 	const readData = await readJsonData();
 	const { username, password } = readData;
 
-	const mongodbUrl = `mongodb+srv://${username}:${password}@generic.eucy2zz.mongodb.net/?retryWrites=true&w=majority&appName=Generic`;
-	const client = await MongoClient.connect(mongodbUrl);
-	return client;
+	if (!username || !password || username === "" || password === "") {
+		return;
+	}
+	try {
+		const mongodbUrl = `mongodb+srv://${username}:${password}@generic.eucy2zz.mongodb.net/?retryWrites=true&w=majority&appName=Generic`;
+		const client = await MongoClient.connect(mongodbUrl);
+
+		return client;
+	} catch (error) {
+		throw new Error("Couldn't connect");
+	}
 }
 
-export async function mongoConnectionHandler(database: string) {
+export async function mongoCollectionsGetter() {
 	const client = await mongoConnector();
+	if (!client) {
+		return;
+	}
+	const { database } = await readJsonData();
 	const db = client.db(database);
-
-	//get all the db names
-	const databasesObjArray = (await db.admin().listDatabases()).databases;
-	const databasesNames: string[] = [];
-
-	databasesObjArray.map((obj) => {
-		databasesNames.push(`${obj.name}`);
-	});
 
 	//get all the collections names.
 	const collections = await db.listCollections().toArray();
@@ -31,22 +35,27 @@ export async function mongoConnectionHandler(database: string) {
 	collections.map((obj) => {
 		collectionsNames.push(`${obj.name}`);
 	});
-	//console.log(collectionsNames);
 
 	client.close();
 
-	return { collectionsNames, databasesNames };
+	return collectionsNames;
 }
 
-export async function mongoDatabaseGetter() {
+export async function mongoDatabaseGetter(database: string) {
 	const client = await mongoConnector();
-	const db = client.db();
+
+	if (!client) {
+		return;
+	}
+	const db = client.db(database);
 	const databasesObjArray = (await db.admin().listDatabases()).databases;
 	const databasesNames: string[] = [];
 
 	databasesObjArray.map((obj) => {
 		databasesNames.push(`${obj.name}`);
 	});
+
+	return databasesNames;
 }
 
 export async function mongoMessagesGetter(
@@ -54,6 +63,9 @@ export async function mongoMessagesGetter(
 	collection: string
 ) {
 	const client = await mongoConnector();
+	if (!client) {
+		return;
+	}
 	//get all messages
 	const db = client.db(database);
 	const messages = db.collection(collection).find();

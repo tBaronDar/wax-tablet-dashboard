@@ -1,6 +1,6 @@
 "use client";
 
-import { readJsonData } from "@/lib/config-file-reader";
+import { readJsonData } from "@/lib/config-editor";
 import { mongoMessagesGetter } from "@/lib/mongoDB-handler";
 import { useState } from "react";
 

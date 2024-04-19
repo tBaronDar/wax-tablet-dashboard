@@ -1,7 +1,6 @@
 "use server";
 import fs from "fs";
 import path from "path";
-import { readJsonData } from "./config-file-reader";
 
 export async function getCreds(formData: FormData) {
 	const username = formData.get("username").toString();
@@ -45,4 +44,17 @@ export async function dropdownSelector(selector: string, data: string) {
 	const filePath = path.join(process.cwd(), "/state/creds.json");
 	const inputJson = JSON.stringify(inputData);
 	fs.writeFileSync(filePath, inputJson);
+}
+
+export async function writeJsonFile(inputData) {
+	const filePath = path.join(process.cwd(), "/state/creds.json");
+	const inputJson = JSON.stringify(inputData);
+	fs.writeFileSync(filePath, inputJson);
+}
+
+export async function readJsonData() {
+	const filePath = path.join(process.cwd(), "/state/creds.json");
+	const data = fs.readFileSync(filePath).toString();
+
+	return JSON.parse(data);
 }

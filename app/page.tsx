@@ -1,11 +1,10 @@
-import Hero from "@/components/home-page/hero";
 import MessagesTable from "@/components/home-page/messages-table";
 import SetupForm from "@/components/home-page/setup-form/form";
 
-import { readJsonData } from "@/lib/config-file-reader";
+import { readJsonData } from "@/lib/config-editor";
 import {
-	mongoConnectionHandler,
 	mongoDatabaseGetter,
+	mongoCollectionsGetter,
 } from "@/lib/mongoDB-handler";
 
 async function HomePage() {
@@ -13,15 +12,19 @@ async function HomePage() {
 
 	const { username, password, database, collection, defDatabase } = setupData;
 
-	const mongoData = await mongoConnectionHandler(defDatabase);
-	const { collectionsNames, databasesNames } = mongoData;
+	let collectionsArray = [];
+	let databasesArray = [];
+	if (username !== "" && password !== "") {
+		databasesArray = await mongoDatabaseGetter(defDatabase);
 
-	const databasesArray = await mongoDatabaseGetter();
-	console.log(databasesArray);
+		if (databasesArray && databasesArray.length > 0) {
+			collectionsArray = await mongoCollectionsGetter();
+		}
 
-	let usedDb = password;
-	if (database === "" || !database) {
-		usedDb = defDatabase;
+		let usedDb = password;
+		if (database === "" || !database) {
+			usedDb = defDatabase;
+		}
 	}
 
 	return (
@@ -29,8 +32,8 @@ async function HomePage() {
 			<SetupForm
 				username={username}
 				password={password}
-				collections={collectionsNames}
-				databases={databasesNames}
+				databases={databasesArray}
+				collections={collectionsArray}
 			/>
 			<MessagesTable />
 		</section>

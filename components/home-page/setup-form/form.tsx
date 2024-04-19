@@ -1,12 +1,36 @@
 "use client";
 
-import { useState } from "react";
-import { dropdownSelector, getCreds } from "@/lib/config-editor";
+import { useEffect, useState } from "react";
+import {
+	dropdownSelector,
+	getCreds,
+	readJsonData,
+	writeJsonFile,
+} from "@/lib/config-editor";
 import Dropdown from "./dropdown";
 
-function SetupForm({ username, password, collections, databases }) {
-	const [selectedCollection, setSelectedCollection] = useState("Select one");
-	const [selectedDatabase, setSelectedDatabase] = useState("Select one");
+function SetupForm({ username, password, databases, collections }) {
+	const [selectedDatabase, setSelectedDatabase] = useState(
+		databases[0] || "No database"
+	);
+	const [selectedCollection, setSelectedCollection] = useState(
+		collections[0] || "No collection"
+	);
+
+	const [usedDatabases, setUsedDatabases] = useState(databases);
+
+	useEffect(() => {
+		async function get() {
+			const configData = await readJsonData();
+			writeJsonFile({
+				...configData,
+				username,
+				password,
+				databases,
+			});
+		}
+		get();
+	}, [username, password]);
 
 	async function collectionSelectHandler(name: string) {
 		setSelectedCollection(name);
@@ -18,8 +42,21 @@ function SetupForm({ username, password, collections, databases }) {
 		await dropdownSelector("database", name);
 	}
 
-	console.log("run form");
+	function purgeHandler() {
+		writeJsonFile({
+			username: "",
+			password: "",
+			defDatabase: "admin",
+			database: "",
+			collection: "",
+			databases: [],
+			collections: [],
+		});
+		setSelectedCollection("");
+		setSelectedDatabase("");
+	}
 
+	console.log("run form");
 	return (
 		<form action={getCreds}>
 			<h1>Setup your database</h1>
@@ -30,7 +67,7 @@ function SetupForm({ username, password, collections, databases }) {
 						id="username"
 						name="username"
 						type="text"
-						defaultValue={username}
+						defaultValue={username || "Enter username"}
 					/>
 				</div>
 				<div>
@@ -39,7 +76,7 @@ function SetupForm({ username, password, collections, databases }) {
 						id="password"
 						name="password"
 						type="text"
-						defaultValue={password}
+						defaultValue={password || "Enter password"}
 					/>
 				</div>
 				<button type="submit">Connect</button>
@@ -55,15 +92,19 @@ function SetupForm({ username, password, collections, databases }) {
 				})}
 			</Dropdown>
 
-			<Dropdown selectedValue={selectedCollection}>
-				{collections.map((name: string) => {
-					return (
-						<p key={name} onClick={collectionSelectHandler.bind(null, name)}>
-							{name}
-						</p>
-					);
-				})}
-			</Dropdown>
+			{
+				<Dropdown selectedValue={selectedCollection}>
+					{collections.map((name: string) => {
+						return (
+							<p key={name} onClick={collectionSelectHandler.bind(null, name)}>
+								{name}
+							</p>
+						);
+					})}
+				</Dropdown>
+			}
+
+			<button onClick={purgeHandler}>Purge Credentials</button>
 		</form>
 	);
 }
