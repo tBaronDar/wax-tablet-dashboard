@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import MessagesTable from "@/components/home-page/messages-table";
 import SetupForm from "@/components/home-page/setup-form/form";
 
@@ -6,8 +7,14 @@ import {
 	mongoDatabaseGetter,
 	mongoCollectionsGetter,
 } from "@/lib/mongoDB-handler";
+import { redirect } from "next/navigation";
 
 async function HomePage() {
+	const session = await auth();
+	if (!session) {
+		//redirect("/setup");
+		return <p>Route protected</p>;
+	}
 	const setupData = await readJsonData();
 
 	const { username, password, database, collection, defDatabase } = setupData;
@@ -28,7 +35,7 @@ async function HomePage() {
 	}
 
 	return (
-		<section>
+		<main>
 			<SetupForm
 				username={username}
 				password={password}
@@ -36,7 +43,7 @@ async function HomePage() {
 				collections={collectionsArray}
 			/>
 			<MessagesTable />
-		</section>
+		</main>
 	);
 }
 
