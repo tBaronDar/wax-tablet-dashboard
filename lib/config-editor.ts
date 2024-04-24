@@ -17,7 +17,7 @@ export async function getCreds(formData: FormData) {
 
 	//console.log(inputData);
 
-	const filePath = path.join(process.cwd(), "/state/creds.json");
+	const filePath = path.join(process.cwd(), "/data/user-data.json");
 	const inputJson = JSON.stringify(inputData);
 	fs.writeFileSync(filePath, inputJson);
 

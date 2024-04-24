@@ -2,19 +2,10 @@
 	{
 		"username": "thebaron",
 		"password": "RwXS2VsiZvfez7B",
-		"defDatabase": "admin",
+		"defDatabase": "portfolio-dev",
 		"database": "",
-		"collection": "",
-		"databases": [
-			"authentication-exerc",
-			"events-app",
-			"portfolio",
-			"portfolio-dev",
-			"admin",
-			"local"
-		],
-		"email": "thedarelis@gmail.com",
-		"collections": []
+		"collection": "messages",
+		"email": "thedarelis@gmail.com"
 	},
 	{
 		"username": "fsfsfs",
@@ -22,15 +13,6 @@
 		"defDatabase": "admin",
 		"database": "",
 		"collection": "",
-		"databases": [
-			"authentication-exerc",
-			"events-app",
-			"portfolio",
-			"portfolio-dev",
-			"admin",
-			"local"
-		],
-		"collections": [],
 		"email": "not-themis@gmail.com"
 	}
 ]

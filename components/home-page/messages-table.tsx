@@ -4,14 +4,26 @@ import { readJsonData } from "@/lib/config-editor";
 import { mongoMessagesGetter } from "@/lib/mongoDB-handler";
 import { useState } from "react";
 
-function MessagesTable() {
-	const [messages, setMessages] = useState([]);
+function MessagesTable({
+	username,
+	password,
+	database,
+	collection,
+	messagesIn,
+}) {
+	const [messages, setMessages] = useState(messagesIn);
 
+	console.log(messagesIn);
 	async function refreshHandler() {
 		const setupData = await readJsonData();
 		const { database, collection } = setupData;
 
-		const readMessages = await mongoMessagesGetter(database, collection);
+		const readMessages = await mongoMessagesGetter(
+			username,
+			password,
+			database,
+			collection
+		);
 		setMessages(readMessages);
 	}
 
@@ -21,19 +33,8 @@ function MessagesTable() {
 		//setStatus("success");
 	}
 
-	// if (status === "no-data") {
-	//   return <h2>Please insert data</h2>;
-	// }
-	// if (status === "loading") {
-	//   return <h2>Loading, please wait...</h2>;
-	// }
-
 	return (
-		<section>
-			<h1>This are the messages</h1>
-			<button type="button" onClick={refreshHandler}>
-				Refresh
-			</button>
+		<>
 			{showtable && (
 				<table>
 					<thead>
@@ -60,7 +61,7 @@ function MessagesTable() {
 					</tbody>
 				</table>
 			)}
-		</section>
+		</>
 	);
 }
 

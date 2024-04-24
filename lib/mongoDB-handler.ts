@@ -3,10 +3,7 @@
 import { MongoClient } from "mongodb";
 import { readJsonData } from "./config-editor";
 
-async function mongoConnector() {
-	const readData = await readJsonData();
-	const { username, password } = readData;
-
+async function mongoConnector(username: string, password: string) {
 	if (!username || !password || username === "" || password === "") {
 		return;
 	}
@@ -20,12 +17,12 @@ async function mongoConnector() {
 	}
 }
 
-export async function mongoCollectionsGetter() {
-	const client = await mongoConnector();
+export async function mongoCollectionsGetter(username, password, database) {
+	const client = await mongoConnector(username, password);
 	if (!client) {
 		return;
 	}
-	const { database } = await readJsonData();
+
 	const db = client.db(database);
 
 	//get all the collections names.
@@ -41,8 +38,12 @@ export async function mongoCollectionsGetter() {
 	return collectionsNames;
 }
 
-export async function mongoDatabaseGetter(database: string) {
-	const client = await mongoConnector();
+export async function mongoDatabaseGetter(
+	username: string,
+	password: string,
+	database: string
+) {
+	const client = await mongoConnector(username, password);
 
 	if (!client) {
 		return;
@@ -59,10 +60,16 @@ export async function mongoDatabaseGetter(database: string) {
 }
 
 export async function mongoMessagesGetter(
+	username: string,
+	password: string,
 	database: string,
 	collection: string
 ) {
-	const client = await mongoConnector();
+	console.log(username);
+	console.log(password);
+	console.log(database);
+	console.log(collection);
+	const client = await mongoConnector(username, password);
 	if (!client) {
 		return;
 	}

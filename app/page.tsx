@@ -1,42 +1,40 @@
 import { auth } from "@/auth";
 import MessagesTable from "@/components/home-page/messages-table";
-import SetupForm from "@/components/setup-form/user-data-editor";
 
-import { readJsonData } from "@/lib/config-editor";
-import {
-	mongoDatabaseGetter,
-	mongoCollectionsGetter,
-} from "@/lib/mongoDB-handler";
+import { readUserData } from "@/lib/config-editor";
+import { mongoMessagesGetter } from "@/lib/mongoDB-handler";
+
 import { redirect } from "next/navigation";
 
 async function HomePage() {
 	const session = await auth();
 	if (!session) {
 		redirect("/setup");
-		return <p>Route protected</p>;
 	}
-	// const setupData = await readJsonData();
 
-	// const { username, password, database, collection, defDatabase } = setupData;
-
-	// let collectionsArray = [];
-	// let databasesArray = [];
-	// if (username !== "" && password !== "") {
-	// 	databasesArray = await mongoDatabaseGetter(defDatabase);
-
-	// 	if (databasesArray && databasesArray.length > 0) {
-	// 		collectionsArray = await mongoCollectionsGetter();
-	// 	}
-
-	// 	let usedDb = password;
-	// 	if (database === "" || !database) {
-	// 		usedDb = defDatabase;
-	// 	}
-	// }
+	let userProfileData;
+	let messages;
+	if (session && session.user) {
+		userProfileData = await readUserData(session.user.email);
+		messages = await mongoMessagesGetter(
+			userProfileData.username,
+			userProfileData.password,
+			userProfileData.defDatabase,
+			userProfileData.collection
+		);
+	}
 
 	return (
 		<main>
-			<MessagesTable />
+			<h1>This are the messages</h1>
+			<button type="button">Refresh</button>
+			<MessagesTable
+				username={userProfileData.username}
+				password={userProfileData.password}
+				database={userProfileData.defDatabase}
+				collection={userProfileData.collection}
+				messagesIn={messages}
+			/>
 		</main>
 	);
 }
