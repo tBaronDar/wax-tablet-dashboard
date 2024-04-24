@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import MessagesTable from "@/components/home-page/messages-table";
-import SetupForm from "@/components/setup-form/form";
+import SetupForm from "@/components/setup-form/user-data-editor";
 
 import { readJsonData } from "@/lib/config-editor";
 import {
@@ -12,7 +12,7 @@ import { redirect } from "next/navigation";
 async function HomePage() {
 	const session = await auth();
 	if (!session) {
-		//redirect("/setup");
+		redirect("/setup");
 		return <p>Route protected</p>;
 	}
 	// const setupData = await readJsonData();

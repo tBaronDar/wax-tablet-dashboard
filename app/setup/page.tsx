@@ -1,15 +1,20 @@
 import { auth, signIn, signOut } from "@/auth";
-import SetupForm from "@/components/setup-form/form";
+import UserDataEditor from "@/components/setup-form/user-data-editor";
+import { readUserData } from "@/lib/config-editor";
 import { redirect } from "next/navigation";
 
 async function SetupPage() {
 	const session = await auth();
 
-	if (session) {
+	let username: string, password: string, defDatabase: string;
+	if (session && session.user) {
 		const { user } = session;
-		const { email, id, image, name } = user;
+		const { email, id, image } = user;
 
-		console.log(email, id, name);
+		const userProfile = await readUserData(email);
+		username = userProfile.username;
+		password = userProfile.password;
+		defDatabase = userProfile.defDatabase;
 	}
 
 	async function loginHandler() {
@@ -32,12 +37,21 @@ async function SetupPage() {
 					</form>
 				)}
 				{session && (
-					<form action={logoutHandler}>
-						<button type="submit">Logout</button>
-					</form>
+					<UserDataEditor
+						nameInput={session.user.name}
+						usernameInput={username}
+						passwordInput={password}
+						defDatabaseInput={defDatabase}
+					/>
+				)}
+				{session && (
+					<div>
+						<form action={logoutHandler}>
+							<button type="submit">Logout</button>
+						</form>
+					</div>
 				)}
 			</div>
-			{session && <SetupForm />}
 		</main>
 	);
 }
