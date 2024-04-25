@@ -24,30 +24,8 @@ export async function getCreds(formData: FormData) {
 	return inputData;
 }
 
-export async function dropdownSelector(selector: string, data: string) {
-	const readData = await readJsonData();
-
-	let inputData = {};
-	if (selector === "collection") {
-		inputData = {
-			...readData,
-			collection: data,
-		};
-	}
-	if (selector === "database") {
-		inputData = {
-			...readData,
-			database: data,
-		};
-	}
-
-	const filePath = path.join(process.cwd(), "/state/creds.json");
-	const inputJson = JSON.stringify(inputData);
-	fs.writeFileSync(filePath, inputJson);
-}
-
 export async function writeJsonFile(inputData) {
-	const filePath = path.join(process.cwd(), "/state/creds.json");
+	const filePath = path.join(process.cwd(), "/data/user-data.json");
 	const inputJson = JSON.stringify(inputData);
 	fs.writeFileSync(filePath, inputJson);
 }
@@ -66,4 +44,32 @@ export async function readUserData(email: string) {
 	const data = JSON.parse(dataJson);
 
 	return data.find((user) => user.email === email);
+}
+
+export async function readUsersList() {
+	const filePath = path.join(process.cwd(), "/data/user-data.json");
+	const dataJson = fs.readFileSync(filePath).toString();
+
+	return JSON.parse(dataJson);
+}
+
+export async function changeUserData(
+	email: string,
+	selectedCollection: string
+) {
+	const userData = await readUserData(email);
+
+	const newUserData = {
+		...userData,
+		collection: selectedCollection,
+	};
+	const dataList = await readUsersList();
+
+	dataList.map((user) =>
+		user.email === userData.email
+			? (user.collection = selectedCollection)
+			: user
+	);
+
+	await writeJsonFile(dataList);
 }

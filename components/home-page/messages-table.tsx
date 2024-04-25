@@ -2,18 +2,15 @@
 
 import { readJsonData } from "@/lib/config-editor";
 import { mongoMessagesGetter } from "@/lib/mongoDB-handler";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function MessagesTable({
-	username,
-	password,
-	database,
-	collection,
-	messagesIn,
-}) {
+function MessagesTable({ username, password, messagesIn }) {
 	const [messages, setMessages] = useState(messagesIn);
 
-	console.log(messagesIn);
+	useEffect(() => {
+		setMessages(messagesIn);
+	}, [username, password, messagesIn]);
+
 	async function refreshHandler() {
 		const setupData = await readJsonData();
 		const { database, collection } = setupData;
@@ -30,7 +27,6 @@ function MessagesTable({
 	let showtable: boolean = false;
 	if (messages.length > 0) {
 		showtable = true;
-		//setStatus("success");
 	}
 
 	return (

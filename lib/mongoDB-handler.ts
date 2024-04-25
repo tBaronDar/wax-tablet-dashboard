@@ -65,10 +65,6 @@ export async function mongoMessagesGetter(
 	database: string,
 	collection: string
 ) {
-	console.log(username);
-	console.log(password);
-	console.log(database);
-	console.log(collection);
 	const client = await mongoConnector(username, password);
 	if (!client) {
 		return;
