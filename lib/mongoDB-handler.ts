@@ -1,7 +1,7 @@
 "use server";
 
-import { MongoClient } from "mongodb";
-import { readJsonData } from "./config-editor";
+import { MongoClient, ObjectId } from "mongodb";
+import { readJsonData, readUserData } from "./config-editor";
 
 async function mongoConnector(username: string, password: string) {
 	if (!username || !password || username === "" || password === "") {
@@ -17,7 +17,11 @@ async function mongoConnector(username: string, password: string) {
 	}
 }
 
-export async function mongoCollectionsGetter(username, password, database) {
+export async function mongoCollectionsGetter(
+	username: string,
+	password: string,
+	database: string
+) {
 	const client = await mongoConnector(username, password);
 	if (!client) {
 		return;
@@ -38,26 +42,26 @@ export async function mongoCollectionsGetter(username, password, database) {
 	return collectionsNames;
 }
 
-export async function mongoDatabaseGetter(
-	username: string,
-	password: string,
-	database: string
-) {
-	const client = await mongoConnector(username, password);
+// export async function mongoDatabaseGetter(
+// 	username: string,
+// 	password: string,
+// 	database: string
+// ) {
+// 	const client = await mongoConnector(username, password);
 
-	if (!client) {
-		return;
-	}
-	const db = client.db(database);
-	const databasesObjArray = (await db.admin().listDatabases()).databases;
-	const databasesNames: string[] = [];
+// 	if (!client) {
+// 		return;
+// 	}
+// 	const db = client.db(database);
+// 	const databasesObjArray = (await db.admin().listDatabases()).databases;
+// 	const databasesNames: string[] = [];
 
-	databasesObjArray.map((obj) => {
-		databasesNames.push(`${obj.name}`);
-	});
+// 	databasesObjArray.map((obj) => {
+// 		databasesNames.push(`${obj.name}`);
+// 	});
 
-	return databasesNames;
-}
+// 	return databasesNames;
+// }
 
 export async function mongoMessagesGetter(
 	username: string,
@@ -86,4 +90,21 @@ export async function mongoMessagesGetter(
 	client.close();
 
 	return messagesArray;
+}
+
+export async function mongoMessageEraser(
+	email: string,
+	selectedMessage: string
+) {
+	const userData = await readUserData(email);
+	const client = await mongoConnector(userData.username, userData.password);
+
+	const db = client.db(userData.defDatabase);
+	try {
+		await db
+			.collection(userData.collection)
+			.deleteOne({ message: selectedMessage });
+	} catch (error) {
+		console.log(error);
+	}
 }

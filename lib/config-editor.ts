@@ -58,11 +58,6 @@ export async function changeUserData(
 	selectedCollection: string
 ) {
 	const userData = await readUserData(email);
-
-	const newUserData = {
-		...userData,
-		collection: selectedCollection,
-	};
 	const dataList = await readUsersList();
 
 	dataList.map((user) =>
