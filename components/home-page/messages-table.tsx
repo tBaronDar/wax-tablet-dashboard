@@ -5,16 +5,16 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-function MessagesTable({ username, password, messagesIn }) {
+import classes from "./messages-table.module.css";
+
+function MessagesTable({ messagesIn }) {
 	const { data: session } = useSession();
 	const [messages, setMessages] = useState(messagesIn);
 	const router = useRouter();
 
-	useEffect(() => {
-		setMessages(messagesIn);
-	}, [username, password, messagesIn]);
-
-	async function refreshHandler() {}
+	// useEffect(() => {
+	// 	setMessages(messagesIn);
+	// }, [ messagesIn]);
 
 	async function deleteMessageHandler(selectedMessage: string) {
 		if (
@@ -25,37 +25,44 @@ function MessagesTable({ username, password, messagesIn }) {
 		}
 	}
 
-	return (
-		<div>
-			<table>
-				<thead>
-					<tr>
-						<th>*</th>
-						<th>Name</th>
-						<th>Email</th>
-						<th>Message</th>
-						<th>Contols</th>
-					</tr>
-				</thead>
-				<tbody>
-					{messages.map((message) => (
-						<tr key={message.id}>
-							<td>{messages.indexOf(message) + 1}</td>
-							<td>{message.name}</td>
-							<td>{message.email}</td>
-							<td>{message.message}</td>
-							<td>
-								<button
-									onClick={deleteMessageHandler.bind(null, message.message)}>
-									delete
-								</button>
-							</td>
+	if (messagesIn.length > 0) {
+		return (
+			<div className={classes.master}>
+				<h1>This are the messages</h1>
+				<table>
+					<thead>
+						<tr>
+							<th>*</th>
+							<th>Name</th>
+							<th>Email</th>
+							<th>Message</th>
+							<th>Contols</th>
 						</tr>
-					))}
-				</tbody>
-			</table>
-		</div>
-	);
+					</thead>
+					<tbody>
+						{messages.map((message) => (
+							<tr key={message.id}>
+								<td>{messages.indexOf(message) + 1}</td>
+								<td>{message.name}</td>
+								<td>{message.email}</td>
+								<td>{message.message}</td>
+								<td>
+									<button
+										onClick={deleteMessageHandler.bind(null, message.message)}>
+										delete
+									</button>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+		);
+	}
+
+	if (!messagesIn || messagesIn.legth === 0) {
+		return <h2>There are no messages to show</h2>;
+	}
 }
 
 export default MessagesTable;

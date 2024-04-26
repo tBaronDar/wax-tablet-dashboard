@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import HomePageControls from "@/components/home-page/home-page-controls";
 import MessagesTable from "@/components/home-page/messages-table";
 import Dropdown from "@/components/setup-form/dropdown";
 
@@ -35,13 +36,9 @@ async function HomePage() {
 				<Dropdown selectedValue={userProfileData.collection}>
 					{collections}
 				</Dropdown>
-				<button type="button">Refresh</button>
-				<h1>This are the messages</h1>
-				<MessagesTable
-					username={userProfileData.username}
-					password={userProfileData.password}
-					messagesIn={messages}
-				/>
+
+				<MessagesTable messagesIn={messages} />
+				<HomePageControls />
 			</main>
 		);
 	}

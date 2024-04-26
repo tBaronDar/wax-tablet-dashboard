@@ -26,7 +26,10 @@ function Dropdown({ children, selectedValue }) {
 
 	return (
 		<div>
-			<button onClick={clickHandler}>{selectedValue}</button>
+			<div>
+				<label htmlFor="list">Select your collection:</label>
+				<button onClick={clickHandler}>{selectedValue}</button>
+			</div>
 			{children.map((item) => (
 				<div
 					style={styles}
