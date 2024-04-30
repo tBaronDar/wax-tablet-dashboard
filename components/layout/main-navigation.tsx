@@ -7,7 +7,11 @@ import Image from "next/image";
 export function MainNavigation() {
 	return (
 		<header className={classes.header}>
-			<Image src={svgIcon} alt={"Logo"} width={100} height={100} />
+			<div className={classes.logo}>
+				<Link href={"/"}>
+					<Image src={svgIcon} alt={"Logo"} width={100} height={100} />
+				</Link>
+			</div>
 			<nav className={classes.navigation}>
 				<ul>
 					<li>

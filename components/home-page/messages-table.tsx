@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import classes from "./messages-table.module.css";
+import { revalidatePath } from "next/cache";
 
 function MessagesTable({ messagesIn }) {
 	const { data: session } = useSession();
@@ -21,27 +22,27 @@ function MessagesTable({ messagesIn }) {
 			window.confirm("This action cannot be undone. Do you want to delete?")
 		) {
 			await mongoMessageEraser(session.user.email, selectedMessage);
-			router.refresh();
+			revalidatePath("/");
 		}
 	}
 
 	if (messagesIn.length > 0) {
 		return (
 			<div className={classes.master}>
-				<h1>This are the messages</h1>
-				<table>
-					<thead>
-						<tr>
-							<th>*</th>
-							<th>Name</th>
-							<th>Email</th>
-							<th>Message</th>
-							<th>Contols</th>
-						</tr>
-					</thead>
+				<h2>This are the messages</h2>
+				<table className={classes.table}>
+					{/* <thead className={classes["table-head"]}>
+						<tr className={classes["table-row"]}>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+						</tr> */}
+					{/* </thead> */}
 					<tbody>
 						{messages.map((message) => (
-							<tr key={message.id}>
+							<tr key={message.id} className={classes["table-row"]}>
 								<td>{messages.indexOf(message) + 1}</td>
 								<td>{message.name}</td>
 								<td>{message.email}</td>

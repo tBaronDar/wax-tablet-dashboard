@@ -12,9 +12,16 @@ import {
 import { redirect } from "next/navigation";
 
 async function HomePage() {
+	console.log("home page running");
+
 	const session = await auth();
 	if (!session) {
 		redirect("/setup");
+	}
+
+	async function refreshPage() {
+		"use server";
+		redirect("/");
 	}
 
 	if (session && session.user) {
@@ -38,7 +45,7 @@ async function HomePage() {
 				</Dropdown>
 
 				<MessagesTable messagesIn={messages} />
-				<HomePageControls />
+				<HomePageControls refresher={refreshPage} />
 			</main>
 		);
 	}

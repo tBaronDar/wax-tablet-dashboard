@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import MainNavigation from "@/components/layout/main-navigation";
+import SessionProviderComp from "@/components/layout/session-provider";
 
 import "./globals.css";
-import SessionProviderComp from "@/components/layout/session-provider";
 
 export const metadata: Metadata = {
 	title: "Wax Tablet",
@@ -16,6 +16,9 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
+			<head>
+				<link rel="icon" href="/code-64.png" sizes="any" />
+			</head>
 			<body>
 				<SessionProviderComp>
 					<MainNavigation />
