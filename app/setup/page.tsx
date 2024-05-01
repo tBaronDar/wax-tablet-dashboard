@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
+import SetupControls from "@/components/setup-form/setup-controls";
 import UserDataEditor from "@/components/setup-form/user-data-editor";
-import { loginHandler } from "@/lib/actions";
 import { readUserData } from "@/lib/config-editor";
 
 async function SetupPage() {
@@ -19,15 +19,7 @@ async function SetupPage() {
 
 	return (
 		<main>
-			{!session && (
-				<form action={loginHandler}>
-					<p>
-						Please Login in order to save your mongoDb credentials and view your
-						messages.
-					</p>
-					<button type="submit">Login</button>
-				</form>
-			)}
+			{!session && <SetupControls />}
 			{session && (
 				<UserDataEditor
 					nameInput={session.user.name}
