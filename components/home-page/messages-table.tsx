@@ -2,31 +2,27 @@
 
 import { mongoMessageEraser, mongoMessagesGetter } from "@/lib/mongoDB-handler";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import classes from "./messages-table.module.css";
-import { revalidatePath } from "next/cache";
 
 function MessagesTable({ messagesIn }) {
 	const { data: session } = useSession();
 	const [messages, setMessages] = useState(messagesIn);
-	const router = useRouter();
 
-	// useEffect(() => {
-	// 	setMessages(messagesIn);
-	// }, [ messagesIn]);
+	useEffect(() => {
+		setMessages(messagesIn);
+	}, [messagesIn]);
 
 	async function deleteMessageHandler(selectedMessage: string) {
 		if (
 			window.confirm("This action cannot be undone. Do you want to delete?")
 		) {
 			await mongoMessageEraser(session.user.email, selectedMessage);
-			revalidatePath("/");
 		}
 	}
 
-	if (messagesIn.length > 0) {
+	if (messages.length > 0) {
 		return (
 			<div className={classes.master}>
 				<h2>This are the messages</h2>
@@ -61,7 +57,7 @@ function MessagesTable({ messagesIn }) {
 		);
 	}
 
-	if (!messagesIn || messagesIn.legth === 0) {
+	if (!messages || messages.legth === 0) {
 		return <h2>There are no messages to show</h2>;
 	}
 }

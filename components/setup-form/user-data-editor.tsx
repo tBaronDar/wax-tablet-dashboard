@@ -1,6 +1,7 @@
-import { mongoCollectionsGetter } from "@/lib/mongoDB-handler";
+import { connectHandler } from "@/lib/actions";
 import SaveDataForm from "./save-data-form";
-import { redirect } from "next/navigation";
+
+import classes from "./user-data-editor.module.css";
 
 function UserDataEditor({
 	nameInput,
@@ -8,13 +9,8 @@ function UserDataEditor({
 	passwordInput,
 	defDatabaseInput,
 }) {
-	async function connectHandler() {
-		"use server";
-		redirect("/");
-	}
-	console.log("run form");
 	return (
-		<div>
+		<div className={classes.master}>
 			{nameInput && <h1>{`Welcome back ${nameInput}`}</h1>}
 			{nameInput && usernameInput !== "" && passwordInput !== "" && (
 				<div>
@@ -33,6 +29,10 @@ function UserDataEditor({
 					<form action={connectHandler}>
 						<button type="submit">Connect</button>
 					</form>
+					<p>
+						If you have entered the mongoDb credentials, click connect to see
+						messages.
+					</p>
 				</div>
 			)}
 			<SaveDataForm

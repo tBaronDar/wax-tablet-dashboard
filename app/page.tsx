@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import HomePageControls from "@/components/home-page/home-page-controls";
 import MessagesTable from "@/components/home-page/messages-table";
 import Dropdown from "@/components/setup-form/dropdown";
+import { connectHandler } from "@/lib/actions";
 
 import { readUserData } from "@/lib/config-editor";
 import {
@@ -12,16 +13,9 @@ import {
 import { redirect } from "next/navigation";
 
 async function HomePage() {
-	console.log("home page running");
-
 	const session = await auth();
 	if (!session) {
 		redirect("/setup");
-	}
-
-	async function refreshPage() {
-		"use server";
-		redirect("/");
 	}
 
 	if (session && session.user) {
@@ -45,7 +39,7 @@ async function HomePage() {
 				</Dropdown>
 
 				<MessagesTable messagesIn={messages} />
-				<HomePageControls refresher={refreshPage} />
+				<HomePageControls refresher={connectHandler} />
 			</main>
 		);
 	}

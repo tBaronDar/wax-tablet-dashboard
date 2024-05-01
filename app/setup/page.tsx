@@ -1,7 +1,7 @@
-import { auth, signIn, signOut } from "@/auth";
+import { auth } from "@/auth";
 import UserDataEditor from "@/components/setup-form/user-data-editor";
+import { loginHandler } from "@/lib/actions";
 import { readUserData } from "@/lib/config-editor";
-import { redirect } from "next/navigation";
 
 async function SetupPage() {
 	const session = await auth();
@@ -17,41 +17,25 @@ async function SetupPage() {
 		defDatabase = userProfile.defDatabase;
 	}
 
-	async function loginHandler() {
-		"use server";
-		await signIn();
-	}
-
-	async function logoutHandler() {
-		"use server";
-		await signOut();
-		//redirect("/setup");
-	}
-
 	return (
 		<main>
-			<div>
-				{!session && (
-					<form action={loginHandler}>
-						<button type="submit">Login</button>
-					</form>
-				)}
-				{session && (
-					<UserDataEditor
-						nameInput={session.user.name}
-						usernameInput={username}
-						passwordInput={password}
-						defDatabaseInput={defDatabase}
-					/>
-				)}
-				{session && (
-					<div>
-						<form action={logoutHandler}>
-							<button type="submit">Logout</button>
-						</form>
-					</div>
-				)}
-			</div>
+			{!session && (
+				<form action={loginHandler}>
+					<p>
+						Please Login in order to save your mongoDb credentials and view your
+						messages.
+					</p>
+					<button type="submit">Login</button>
+				</form>
+			)}
+			{session && (
+				<UserDataEditor
+					nameInput={session.user.name}
+					usernameInput={username}
+					passwordInput={password}
+					defDatabaseInput={defDatabase}
+				/>
+			)}
 		</main>
 	);
 }

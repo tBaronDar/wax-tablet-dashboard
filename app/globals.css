@@ -1,3 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap");
+
+html {
+	font-family: "Sora", sans-serif;
+}
+body {
+	margin: 0;
+	background-color: var(--palette-color3);
+	color: var(--palette-color1);
+	padding-bottom: var(--size-20);
+}
 :root {
 	--size-1: 0.25rem;
 	--size-2: 0.5rem;
@@ -9,12 +20,25 @@
 	--size-16: 4rem;
 	--size-20: 5rem;
 	--size-40: 10rem;
+
+	/* Palette Number 149 */
+	--palette-color1: #3a4750;
+	--palette-color2: #f6c90e;
+	--palette-color3: #eeeeee;
+}
+
+button {
+	background-color: var(--palette-color2);
+	color: var(--palette-color1);
+	padding: var(--size-4);
+	font-size: var(--size-5);
+	border: none;
+	cursor: pointer;
 }
 
 * {
 	box-sizing: border-box;
 	padding: 0;
-	margin: 0;
 }
 
 a {
@@ -24,13 +48,20 @@ a {
 
 main {
 	display: grid;
-	grid-template-columns: 25% auto 25%;
-
-	margin-top: 5%;
+	grid-template-columns: 5% auto 5%;
+	margin-top: 1%;
 }
 
 main div {
 	grid-column: 2;
 	justify-content: space-evenly;
 	align-items: center;
+}
+
+@media (max-width: 550px) {
+	main {
+		display: grid;
+		grid-template-columns: 5% auto 5%;
+		margin-top: 2%;
+	}
 }

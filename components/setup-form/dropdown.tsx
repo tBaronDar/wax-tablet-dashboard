@@ -6,10 +6,11 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import classes from "./dropdown.module.css";
-import { revalidatePath } from "next/cache";
 
 function Dropdown({ children, selectedValue }) {
 	const [showList, setShowList] = useState(false);
+	const [buttonText, setButtonText] = useState(selectedValue);
+
 	const { data: session } = useSession();
 	const router = useRouter();
 
@@ -18,10 +19,9 @@ function Dropdown({ children, selectedValue }) {
 	}
 
 	async function itemSelectHandler(itemName: string) {
-		await changeUserData(session.user.email, itemName);
+		setButtonText(itemName);
 		setShowList(false);
-		revalidatePath("/", "layout");
-		router.push("/");
+		await changeUserData(session.user.email, itemName);
 	}
 
 	return (
@@ -29,11 +29,14 @@ function Dropdown({ children, selectedValue }) {
 			<h3>Please select the collection you want to view.</h3>
 			<div className={classes.container}>
 				<button className={classes["dropdown-button"]} onClick={listToggler}>
-					{selectedValue}
+					{buttonText}
 				</button>
 				<div className={showList ? classes.listOn : classes.listOff}>
 					{children.map((item) => (
-						<div key={item} onClick={itemSelectHandler.bind(null, item)}>
+						<div
+							key={item}
+							className={classes["list-item"]}
+							onClick={itemSelectHandler.bind(null, item)}>
 							{item}
 						</div>
 					))}

@@ -9,7 +9,13 @@ export function MainNavigation() {
 		<header className={classes.header}>
 			<div className={classes.logo}>
 				<Link href={"/"}>
-					<Image src={svgIcon} alt={"Logo"} width={100} height={100} />
+					<Image
+						src={svgIcon}
+						color="red"
+						alt={"Logo"}
+						width={100}
+						height={100}
+					/>
 				</Link>
 			</div>
 			<nav className={classes.navigation}>

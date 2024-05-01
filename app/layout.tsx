@@ -6,7 +6,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
 	title: "Wax Tablet",
-	description: "Dashboard",
+	description: "A mongoDb brower dashboard",
 };
 
 export default function RootLayout({
@@ -16,9 +16,6 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
-			<head>
-				<link rel="icon" href="/code-64.png" sizes="any" />
-			</head>
 			<body>
 				<SessionProviderComp>
 					<MainNavigation />

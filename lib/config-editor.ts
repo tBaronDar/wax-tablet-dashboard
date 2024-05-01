@@ -1,5 +1,7 @@
 "use server";
 import fs from "fs";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import path from "path";
 
 export async function getCreds(formData: FormData) {
@@ -67,4 +69,6 @@ export async function changeUserData(
 	);
 
 	await writeJsonFile(dataList);
+	revalidatePath("/", "layout");
+	redirect("/");
 }
