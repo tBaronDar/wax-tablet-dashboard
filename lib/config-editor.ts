@@ -112,7 +112,7 @@ export async function registerUser(formData: FormData) {
     collection: "dummy-collection",
   });
 
-  const filePath = path.join(process.cwd(), "/data/user-data.json");
+  const filePath = path.join(process.cwd(), "data", "user-data.json");
   const inputJson = JSON.stringify(readData);
   fs.writeFileSync(filePath, inputJson);
 
