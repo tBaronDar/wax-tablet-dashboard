@@ -15,8 +15,8 @@ function SetupControls() {
       </form>
       <form action={signupHandler} className={classes.items}>
         <p>
-          If you don't have an account or you can't login with Google or create
-          an account here:
+          If you don&apos;t have an account or you can&apos;t login with Google
+          or create an account here:
         </p>
         <button type="submit">Sign up</button>
       </form>

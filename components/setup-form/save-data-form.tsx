@@ -38,8 +38,8 @@ function SaveDataForm({
         <form action={getCreds.bind(null, session.user.email)}>
           <h2>Setup your database here: </h2>
           <h3>
-            Don't change the collection and/or the database unless you know what
-            you are doing.
+            Don&apos;t change the collection and/or the database unless you know
+            what you are doing.
           </h3>
           <h3>More info in the about page.</h3>
           <div>

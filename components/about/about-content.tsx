@@ -24,8 +24,8 @@ function AboutContent() {
           Second click the Edit data button and save the MongoDb credentials
         </li>
         <li>
-          If you don't have your own credentials use these dummy credentials
-          instead:
+          If you don&apos;t have your own credentials use these dummy
+          credentials instead:
         </li>
         <li>
           Username: <strong>thebaron</strong>
