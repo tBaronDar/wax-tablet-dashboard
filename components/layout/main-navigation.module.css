@@ -26,6 +26,7 @@
 
 .logo {
   margin: 3%;
+  padding: var(--size-2);
 }
 
 .logo img {

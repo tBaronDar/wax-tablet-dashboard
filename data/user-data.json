@@ -1,18 +1,29 @@
 [
-	{
-		"username": "thebaron",
-		"password": "RwXS2VsiZvfez7B",
-		"defDatabase": "portfolio-dev",
-		"database": "",
-		"collection": "test-collection",
-		"email": "thedarelis@gmail.com"
-	},
-	{
-		"username": "fsfsfs",
-		"password": "XS2sfsfsfVsiZvfez7B",
-		"defDatabase": "admin",
-		"database": "",
-		"collection": "",
-		"email": "not-themis@gmail.com"
-	}
+  {
+    "username": "thebaron",
+    "password": "RwXS2VsiZvfez7B",
+    "defDatabase": "portfolio-dev",
+    "collection": "test-collection",
+    "email": "thedarelis@gmail.com",
+    "waxPassword": "123456",
+    "name": "themis"
+  },
+  {
+    "email": "souri@gmail.com",
+    "waxPassword": "777777",
+    "name": "Souri",
+    "username": "not set",
+    "password": "not set",
+    "defDatabase": "portfolio-dev",
+    "collection": "test-collection"
+  },
+  {
+    "email": "qui@gmail.com",
+    "waxPassword": "111111",
+    "name": "quiqui",
+    "username": "not set",
+    "password": "not set",
+    "defDatabase": "portfolio-dev",
+    "collection": "test-collection"
+  }
 ]

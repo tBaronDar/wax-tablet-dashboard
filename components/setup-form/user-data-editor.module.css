@@ -1,6 +1,10 @@
 .master {
-	margin-top: 5%;
-	margin-bottom: 5%;
-	align-items: center;
-	text-align: center;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  align-items: center;
+  text-align: center;
+}
+
+.controls {
+  margin: 2%;
 }
