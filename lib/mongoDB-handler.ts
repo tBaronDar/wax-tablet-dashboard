@@ -126,6 +126,33 @@ export async function mongoRegisterNewUser(formData: FormData) {
 	client.close();
 
 	redirect("/setup");
+	//return { status: "success", message: "Profile added" };
+}
 
-	return { status: "success", message: "Profile added" };
+export async function mongoFindUser(email: string) {
+	const connectionUsername = process.env.MONGO_USERNAME;
+	const connectionPassword = process.env.MONGO_PASSWORD;
+
+	const client = await mongoConnector(connectionUsername, connectionPassword);
+	const db = client.db("wax-tablet");
+
+	const existingUser = await db
+		.collection("credentials")
+		.findOne({ email: email });
+
+	if (!existingUser) {
+		throw new Error("No user found");
+	}
+
+	const returnProfile: UserProfile = {
+		email: existingUser.email,
+		name: existingUser.name,
+		username: existingUser.username,
+		password: existingUser.password,
+		collection: existingUser.collection,
+		database: existingUser.database,
+		waxPassword: existingUser.waxPassword,
+	};
+
+	return returnProfile;
 }
