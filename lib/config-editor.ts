@@ -7,116 +7,116 @@ import { redirect } from "next/navigation";
 import path from "path";
 
 interface UserProfile {
-  username?: string;
-  password?: string;
-  defDatabase?: string;
-  database?: string;
-  collection?: string;
-  email?: string;
-  waxPassword?: number;
+	username?: string;
+	password?: string;
+	defDatabase?: string;
+	database?: string;
+	collection?: string;
+	email?: string;
+	waxPassword?: number;
 }
 
 export async function getCreds(formData: FormData, email: string) {
-  const username = formData.get("username").toString();
-  const password = formData.get("password").toString();
-  const collection = formData.get("password").toString();
-  const defDatabase = formData.get("password").toString();
+	const username = formData.get("username").toString();
+	const password = formData.get("password").toString();
+	const collection = formData.get("password").toString();
+	const defDatabase = formData.get("password").toString();
 
-  //validation
+	//validation
 
-  const readData = await readJsonData();
+	const readData = await readJsonData();
 
-  const currentUser = readData.find((user) => user.email === email);
+	const currentUser = readData.find((user) => user.email === email);
 
-  const newUserData = {
-    ...currentUser,
-    username,
-    password,
-    collection,
-    defDatabase,
-  };
+	const newUserData = {
+		...currentUser,
+		username,
+		password,
+		collection,
+		defDatabase,
+	};
 
-  readData.push(newUserData);
+	readData.push(newUserData);
 
-  //console.log(inputData);
+	//console.log(inputData);
 
-  const filePath = path.join(process.cwd(), "/data/user-data.json");
-  const inputJson = JSON.stringify(readData);
-  fs.writeFileSync(filePath, inputJson);
+	const filePath = path.join(process.cwd(), "/data/user-data.json");
+	const inputJson = JSON.stringify(readData);
+	fs.writeFileSync(filePath, inputJson);
 
-  return readData;
+	return readData;
 }
 
 export async function writeJsonFile(inputData) {
-  const filePath = path.join(process.cwd(), "/data/user-data.json");
-  const inputJson = JSON.stringify(inputData);
-  fs.writeFileSync(filePath, inputJson);
+	const filePath = path.join(process.cwd(), "/data/user-data.json");
+	const inputJson = JSON.stringify(inputData);
+	fs.writeFileSync(filePath, inputJson);
 }
 
 export async function readJsonData() {
-  const filePath = path.join(process.cwd(), "/data/user-data.json");
-  const data = fs.readFileSync(filePath).toString();
+	const filePath = path.join(process.cwd(), "/data/user-data.json");
+	const data = fs.readFileSync(filePath).toString();
 
-  return JSON.parse(data);
+	return JSON.parse(data);
 }
 
 export async function readUserData(email: string) {
-  //console.log(email);
-  const filePath = path.join(process.cwd(), "/data/user-data.json");
-  const dataJson = fs.readFileSync(filePath).toString();
+	//console.log(email);
+	const filePath = path.join(process.cwd(), "/data/user-data.json");
+	const dataJson = fs.readFileSync(filePath).toString();
 
-  const data = JSON.parse(dataJson);
+	const data = JSON.parse(dataJson);
 
-  return data.find((user) => user.email === email);
+	return data.find((user) => user.email === email);
 }
 
 export async function readUsersList() {
-  const filePath = path.join(process.cwd(), "/data/user-data.json");
-  const dataJson = fs.readFileSync(filePath).toString();
+	const filePath = path.join(process.cwd(), "/data/user-data.json");
+	const dataJson = fs.readFileSync(filePath).toString();
 
-  return JSON.parse(dataJson);
+	return JSON.parse(dataJson);
 }
 
 export async function changeUserData(
-  email: string,
-  selectedCollection: string
+	email: string,
+	selectedCollection: string
 ) {
-  const userData = await readUserData(email);
-  const dataList = await readUsersList();
+	const userData = await readUserData(email);
+	const dataList = await readUsersList();
 
-  dataList.map((user) =>
-    user.email === userData.email
-      ? (user.collection = selectedCollection)
-      : user
-  );
+	dataList.map((user) =>
+		user.email === userData.email
+			? (user.collection = selectedCollection)
+			: user
+	);
 
-  await writeJsonFile(dataList);
-  revalidatePath("/", "layout");
-  redirect("/");
+	await writeJsonFile(dataList);
+	revalidatePath("/", "layout");
+	redirect("/");
 }
 
-export async function registerUser(formData: FormData) {
-  const readData = await readJsonData();
+// export async function registerUser(formData: FormData) {
+//   const readData = await readJsonData();
 
-  const userEmail = formData.get("userEmail");
-  const waxPassword = formData.get("waxPassword");
-  const name = formData.get("name");
+//   const userEmail = formData.get("userEmail");
+//   const waxPassword = formData.get("waxPassword");
+//   const name = formData.get("name");
 
-  readData.push({
-    email: userEmail,
-    waxPassword,
-    name,
-    username: "not set",
-    password: "not set",
-    defDatabase: "dummy-database",
-    collection: "dummy-collection",
-  });
+//   readData.push({
+//     email: userEmail,
+//     waxPassword,
+//     name,
+//     username: "not set",
+//     password: "not set",
+//     defDatabase: "dummy-database",
+//     collection: "dummy-collection",
+//   });
 
-  const filePath = path.join(process.cwd(), "data", "user-data.json");
-  const inputJson = JSON.stringify(readData);
-  fs.writeFileSync(filePath, inputJson);
+//   const filePath = path.join(process.cwd(), "data", "user-data.json");
+//   const inputJson = JSON.stringify(readData);
+//   fs.writeFileSync(filePath, inputJson);
 
-  await signIn();
+//   await signIn();
 
-  revalidatePath("/");
-}
+//   revalidatePath("/");
+// }

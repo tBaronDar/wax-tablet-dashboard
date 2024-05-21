@@ -1,7 +1,10 @@
 "use server";
 
-import { MongoClient, ObjectId } from "mongodb";
-import { readJsonData, readUserData } from "./config-editor";
+import { MongoClient } from "mongodb";
+import { readUserData } from "./config-editor";
+import { UserProfile } from "./types";
+import { signIn } from "@/auth";
+import { redirect } from "next/navigation";
 
 async function mongoConnector(username: string, password: string) {
 	if (!username || !password || username === "" || password === "") {
@@ -41,27 +44,6 @@ export async function mongoCollectionsGetter(
 
 	return collectionsNames;
 }
-
-// export async function mongoDatabaseGetter(
-// 	username: string,
-// 	password: string,
-// 	database: string
-// ) {
-// 	const client = await mongoConnector(username, password);
-
-// 	if (!client) {
-// 		return;
-// 	}
-// 	const db = client.db(database);
-// 	const databasesObjArray = (await db.admin().listDatabases()).databases;
-// 	const databasesNames: string[] = [];
-
-// 	databasesObjArray.map((obj) => {
-// 		databasesNames.push(`${obj.name}`);
-// 	});
-
-// 	return databasesNames;
-// }
 
 export async function mongoMessagesGetter(
 	username: string,
@@ -107,4 +89,43 @@ export async function mongoMessageEraser(
 	} catch (error) {
 		console.log(error);
 	}
+}
+
+export async function mongoRegisterNewUser(formData: FormData) {
+	const connectionUsername = process.env.MONGO_USERNAME;
+	const connectionPassword = process.env.MONGO_PASSWORD;
+
+	const userEmail = formData.get("userEmail").toString();
+	const waxPassword = formData.get("waxPassword").toString();
+	const name = formData.get("name").toString();
+
+	//validation
+
+	const client = await mongoConnector(connectionUsername, connectionPassword);
+	const db = client.db("wax-tablet");
+	const existingUser = await db
+		.collection("credentials")
+		.findOne({ email: userEmail });
+
+	if (existingUser) {
+		throw new Error("Email in use!!");
+	}
+
+	const newUserProfile: UserProfile = {
+		email: userEmail,
+		waxPassword: waxPassword,
+		name: name,
+		collection: "",
+		database: "",
+		password: "",
+		username: "",
+	};
+
+	await db.collection("credentials").insertOne(newUserProfile);
+
+	client.close();
+
+	redirect("/setup");
+
+	return { status: "success", message: "Profile added" };
 }
