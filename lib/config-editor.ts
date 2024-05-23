@@ -6,21 +6,11 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import path from "path";
 
-interface UserProfile {
-	username?: string;
-	password?: string;
-	defDatabase?: string;
-	database?: string;
-	collection?: string;
-	email?: string;
-	waxPassword?: number;
-}
-
 export async function getCreds(formData: FormData, email: string) {
 	const username = formData.get("username").toString();
 	const password = formData.get("password").toString();
 	const collection = formData.get("password").toString();
-	const defDatabase = formData.get("password").toString();
+	const database = formData.get("password").toString();
 
 	//validation
 
@@ -33,7 +23,7 @@ export async function getCreds(formData: FormData, email: string) {
 		username,
 		password,
 		collection,
-		defDatabase,
+		database,
 	};
 
 	readData.push(newUserData);

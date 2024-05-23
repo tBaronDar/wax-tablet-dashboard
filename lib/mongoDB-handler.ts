@@ -34,7 +34,7 @@ export async function mongoCollectionsGetter(
 
 	//get all the collections names.
 	const collections = await db.listCollections().toArray();
-	const collectionsNames = [];
+	const collectionsNames: string[] = [];
 
 	collections.map((obj) => {
 		collectionsNames.push(`${obj.name}`);
@@ -130,6 +130,7 @@ export async function mongoRegisterNewUser(formData: FormData) {
 }
 
 export async function mongoFindUser(email: string) {
+	console.log(email);
 	const connectionUsername = process.env.MONGO_USERNAME;
 	const connectionPassword = process.env.MONGO_PASSWORD;
 
@@ -140,11 +141,13 @@ export async function mongoFindUser(email: string) {
 		.collection("credentials")
 		.findOne({ email: email });
 
+	client.close();
+
 	if (!existingUser) {
 		throw new Error("No user found");
 	}
 
-	const returnProfile: UserProfile = {
+	const userProfile: UserProfile = {
 		email: existingUser.email,
 		name: existingUser.name,
 		username: existingUser.username,
@@ -154,5 +157,30 @@ export async function mongoFindUser(email: string) {
 		waxPassword: existingUser.waxPassword,
 	};
 
-	return returnProfile;
+	return userProfile;
+}
+
+export async function mongoUpdateUserProfile(email: string, dataInput) {
+	//validation
+	const existingUser = await mongoFindUser(email);
+
+	const newUser: UserProfile = {
+		...existingUser,
+		username: dataInput.usernameInput,
+		password: dataInput.passwordInput,
+		collection: dataInput.collectionInput,
+		database: dataInput.databaseInput,
+	};
+
+	const connectionUsername = process.env.MONGO_USERNAME;
+	const connectionPassword = process.env.MONGO_PASSWORD;
+
+	const client = await mongoConnector(connectionUsername, connectionPassword);
+	const db = client.db("wax-tablet");
+
+	await db
+		.collection("credentials")
+		.findOneAndReplace({ email: email }, newUser);
+
+	client.close();
 }
