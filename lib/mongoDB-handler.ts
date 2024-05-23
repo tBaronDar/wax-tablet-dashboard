@@ -3,7 +3,6 @@
 import { MongoClient } from "mongodb";
 import { readUserData } from "./config-editor";
 import { UserProfile } from "./types";
-import { signIn } from "@/auth";
 import { redirect } from "next/navigation";
 
 async function mongoConnector(username: string, password: string) {
@@ -181,6 +180,4 @@ export async function mongoUpdateUserProfile(email: string, dataInput) {
 	await db
 		.collection("credentials")
 		.findOneAndReplace({ email: email }, newUser);
-
-	client.close();
 }

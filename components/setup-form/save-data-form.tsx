@@ -12,6 +12,7 @@ function SaveDataForm(props) {
 	const [password, setPassword] = useState("");
 	const [collection, setCollection] = useState("");
 	const [database, setDatabase] = useState("");
+	const [isPending, setIsPending] = useState(false);
 
 	useEffect(() => {
 		async function profileGettter() {
@@ -31,6 +32,7 @@ function SaveDataForm(props) {
 	}
 
 	async function userProfileDataHandler(formData: FormData) {
+		setIsPending(true);
 		const usernameInput = formData.get("username").toString();
 		const passwordInput = formData.get("password").toString();
 		const collectionInput = formData.get("collection").toString();
@@ -43,6 +45,9 @@ function SaveDataForm(props) {
 			databaseInput,
 		};
 		await mongoUpdateUserProfile(props.email, dataInput);
+
+		setShowEditor(false);
+		setIsPending(false);
 	}
 
 	let buttonLabel: string;
@@ -115,7 +120,9 @@ function SaveDataForm(props) {
 							/>
 						</div>
 					</div>
-					<button type="submit">Save</button>
+					<button type="submit" disabled={isPending}>
+						Save
+					</button>
 				</form>
 			)}
 

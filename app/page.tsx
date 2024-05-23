@@ -47,7 +47,7 @@ async function HomePage() {
 		return (
 			<main>
 				<Dropdown selectedValue={collection} collectionsArray={collections} />
-				{/* <MessagesTable messagesIn={messages} /> */}
+				<MessagesTable messagesIn={messages} />
 				<HomePageControls refresher={connectHandler} />
 			</main>
 		);
