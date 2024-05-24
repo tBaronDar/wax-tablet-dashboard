@@ -129,7 +129,7 @@ export async function mongoRegisterNewUser(formData: FormData) {
 }
 
 export async function mongoFindUser(email: string) {
-	console.log(email);
+	//console.log(email);
 	const connectionUsername = process.env.MONGO_USERNAME;
 	const connectionPassword = process.env.MONGO_PASSWORD;
 
@@ -160,16 +160,26 @@ export async function mongoFindUser(email: string) {
 }
 
 export async function mongoUpdateUserProfile(email: string, dataInput) {
+	console.log("profile updating...");
 	//validation
 	const existingUser = await mongoFindUser(email);
 
-	const newUser: UserProfile = {
-		...existingUser,
-		username: dataInput.usernameInput,
-		password: dataInput.passwordInput,
-		collection: dataInput.collectionInput,
-		database: dataInput.databaseInput,
-	};
+	let newUser: UserProfile;
+
+	if (typeof dataInput === "string") {
+		newUser = {
+			...existingUser,
+			collection: dataInput,
+		};
+	} else {
+		newUser = {
+			...existingUser,
+			username: dataInput.usernameInput,
+			password: dataInput.passwordInput,
+			collection: dataInput.collectionInput,
+			database: dataInput.databaseInput,
+		};
+	}
 
 	const connectionUsername = process.env.MONGO_USERNAME;
 	const connectionPassword = process.env.MONGO_PASSWORD;

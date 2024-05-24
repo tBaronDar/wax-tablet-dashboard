@@ -6,12 +6,15 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import classes from "./dropdown.module.css";
+import { mongoUpdateUserProfile } from "@/lib/mongoDB-handler";
+import { revalidatePath } from "next/cache";
 
 function Dropdown(props) {
 	const [showList, setShowList] = useState(false);
 	const [buttonText, setButtonText] = useState(props.selectedValue);
+	const [userEmail, setUserEmail] = useState(props.email);
 
-	const { data: session } = useSession();
+	const router = useRouter();
 
 	function listToggler() {
 		showList ? setShowList(false) : setShowList(true);
@@ -24,19 +27,19 @@ function Dropdown(props) {
 	}
 
 	async function itemSelectHandler(itemName: string) {
+		console.log("list item clicked");
 		setButtonText(itemName);
 		setShowList(false);
-		await changeUserData(session.user.email, itemName);
+		await mongoUpdateUserProfile(props.userEmail, itemName);
+		//revalidatePath("/");
+		router.refresh();
 	}
 
 	return (
 		<div className={classes.master}>
 			<h3>Please select the collection you want to view.</h3>
 			<div className={classes.container}>
-				<button
-					className={classes["dropdown-button"]}
-					onClick={listToggler}
-					onBlur={listHide}>
+				<button className={classes["dropdown-button"]} onClick={listToggler}>
 					{buttonText}
 					<span>&#8595;</span>
 				</button>

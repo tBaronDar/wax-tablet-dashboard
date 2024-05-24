@@ -43,10 +43,14 @@ async function HomePage() {
 		);
 
 		const collection: string = userProfileData.collection;
-
+		console.log(session.user.email);
 		return (
 			<main>
-				<Dropdown selectedValue={collection} collectionsArray={collections} />
+				<Dropdown
+					selectedValue={collection}
+					collectionsArray={collections}
+					userEmail={session.user.email}
+				/>
 				<MessagesTable messagesIn={messages} />
 				<HomePageControls refresher={connectHandler} />
 			</main>
