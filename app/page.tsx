@@ -1,8 +1,9 @@
 import { auth } from "@/auth";
 import HomePageControls from "@/components/home-page/home-page-controls";
 import MessagesTable from "@/components/home-page/messages-table";
-import Dropdown from "@/components/setup-form/dropdown";
+import Dropdown from "@/components/home-page/dropdown";
 import { connectHandler } from "@/lib/actions";
+import { Suspense } from "react";
 
 import {
 	mongoCollectionsGetter,
@@ -11,23 +12,35 @@ import {
 } from "@/lib/mongoDB-handler";
 
 import { redirect } from "next/navigation";
+import { unstable_noStore } from "next/cache";
+import LoadingSpinner from "@/components/ui/loading-spinner";
+
+async function Messages() {
+	unstable_noStore();
+	const session = await auth();
+
+	if (session && session.user.email) {
+		const userProfileData = await mongoFindUser(session.user.email);
+		const messages = await mongoMessagesGetter(
+			userProfileData.username,
+			userProfileData.password,
+			userProfileData.database,
+			userProfileData.collection
+		);
+		return <MessagesTable messagesIn={messages} />;
+	}
+}
 
 async function HomePage() {
+	unstable_noStore();
 	const session = await auth();
+
 	if (!session) {
 		redirect("/setup");
 	}
 
 	if (session && session.user.email) {
-		console.log(session);
-
 		const userProfileData = await mongoFindUser(session.user.email);
-		if (
-			userProfileData.username === ("not set" || "") &&
-			userProfileData.password === ("not set" || "")
-		) {
-			redirect("/setup");
-		}
 
 		const collections: string[] = await mongoCollectionsGetter(
 			userProfileData.username,
@@ -35,15 +48,8 @@ async function HomePage() {
 			userProfileData.database
 		);
 
-		const messages = await mongoMessagesGetter(
-			userProfileData.username,
-			userProfileData.password,
-			userProfileData.database,
-			userProfileData.collection
-		);
-
 		const collection: string = userProfileData.collection;
-		console.log(session.user.email);
+
 		return (
 			<main>
 				<Dropdown
@@ -51,8 +57,12 @@ async function HomePage() {
 					collectionsArray={collections}
 					userEmail={session.user.email}
 				/>
-				<MessagesTable messagesIn={messages} />
-				<HomePageControls refresher={connectHandler} />
+
+				<Suspense fallback={<LoadingSpinner />}>
+					<Messages />
+				</Suspense>
+
+				<HomePageControls />
 			</main>
 		);
 	}

@@ -1,7 +1,6 @@
 "use server";
 
 import { MongoClient } from "mongodb";
-import { readUserData } from "./config-editor";
 import { UserProfile } from "./types";
 import { redirect } from "next/navigation";
 
@@ -77,10 +76,10 @@ export async function mongoMessageEraser(
 	email: string,
 	selectedMessage: string
 ) {
-	const userData = await readUserData(email);
+	const userData = await mongoFindUser(email);
 	const client = await mongoConnector(userData.username, userData.password);
 
-	const db = client.db(userData.defDatabase);
+	const db = client.db(userData.database);
 	try {
 		await db
 			.collection(userData.collection)

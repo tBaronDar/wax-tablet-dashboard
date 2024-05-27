@@ -1,0 +1,11 @@
+.delete {
+	background-color: transparent;
+	padding: var(--size-1);
+	border: none;
+	cursor: pointer;
+}
+
+.delete img {
+	object-fit: fill;
+	object-position: top;
+}

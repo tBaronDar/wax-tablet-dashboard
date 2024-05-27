@@ -7,6 +7,7 @@ import "./globals.css";
 export const metadata: Metadata = {
 	title: "Wax Tablet",
 	description: "A mongoDb brower dashboard",
+	// icons: [{ rel: "icon", url: "/logo.svg" }],
 };
 
 export default function RootLayout({

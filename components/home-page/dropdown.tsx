@@ -1,18 +1,17 @@
 "use client";
 
-import { changeUserData } from "@/lib/config-editor";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import classes from "./dropdown.module.css";
 import { mongoUpdateUserProfile } from "@/lib/mongoDB-handler";
-import { revalidatePath } from "next/cache";
+import LoadingSpinner from "../ui/loading-spinner";
+import { connectHandler } from "@/lib/actions";
 
 function Dropdown(props) {
 	const [showList, setShowList] = useState(false);
 	const [buttonText, setButtonText] = useState(props.selectedValue);
-	const [userEmail, setUserEmail] = useState(props.email);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const router = useRouter();
 
@@ -20,31 +19,34 @@ function Dropdown(props) {
 		showList ? setShowList(false) : setShowList(true);
 	}
 
+	async function itemSelectHandler(itemName: string) {
+		setButtonText(itemName);
+		setIsLoading(true);
+		setShowList(false);
+		await mongoUpdateUserProfile(props.userEmail, itemName);
+		await connectHandler();
+		setIsLoading(false);
+	}
+
 	function listHide() {
-		if (showList) {
+		if (!isLoading) {
 			setShowList(false);
 		}
 	}
-
-	async function itemSelectHandler(itemName: string) {
-		console.log("list item clicked");
-		setButtonText(itemName);
-		setShowList(false);
-		await mongoUpdateUserProfile(props.userEmail, itemName);
-		//revalidatePath("/");
-		router.refresh();
-	}
-
 	return (
 		<div className={classes.master}>
-			<h3>Please select the collection you want to view.</h3>
-			<div className={classes.container}>
-				<button className={classes["dropdown-button"]} onClick={listToggler}>
+			{isLoading && <LoadingSpinner />}
+			{!isLoading && <h3>Please select the collection you want to view.</h3>}
+			<div className={classes.container} onMouseLeave={listHide}>
+				<button
+					disabled={isLoading}
+					className={classes["dropdown-button"]}
+					onClick={listToggler}>
 					{buttonText}
 					<span>&#8595;</span>
 				</button>
 				<div className={showList ? classes.listOn : classes.listOff}>
-					{props.collectionsArray.map((item) => (
+					{props.collectionsArray.map((item: string) => (
 						<div
 							key={item}
 							className={classes["list-item"]}
