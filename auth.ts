@@ -2,7 +2,6 @@ import type { NextAuthConfig } from "next-auth";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { readUserData } from "./lib/config-editor";
 import { revalidatePath } from "next/cache";
 import { UserProfile } from "./lib/types";
 import { mongoFindUser } from "./lib/mongoDB-handler";

@@ -2,7 +2,6 @@ import { auth } from "@/auth";
 import HomePageControls from "@/components/home-page/home-page-controls";
 import MessagesTable from "@/components/home-page/messages-table";
 import Dropdown from "@/components/home-page/dropdown";
-import { connectHandler } from "@/lib/actions";
 import { Suspense } from "react";
 
 import {

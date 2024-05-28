@@ -23,7 +23,7 @@ function SaveDataForm(props) {
 			setDatabase(userProfile.database);
 		}
 		profileGettter();
-	}, []);
+	}, [props.email]);
 
 	const [showEditor, setShowEditor] = useState(false);
 
