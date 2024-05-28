@@ -6,7 +6,7 @@ function AboutContent() {
 			<h2>About this website</h2>
 			<ul className={classes.list}>
 				<h3 className={classes.red}>
-					Currently the google login doesn't work. Please create your own
+					Currently the google login doesn&apos;t work. Please create your own
 					account email, password, etc
 				</h3>
 				<li>
