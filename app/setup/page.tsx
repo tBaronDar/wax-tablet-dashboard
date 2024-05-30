@@ -1,7 +1,8 @@
-import { auth, signOut } from "@/auth";
+import { auth } from "@/auth";
+import { mongoFindUser } from "@/lib/mongoDB-handler";
 import SetupControls from "@/components/setup-form/setup-controls";
 import UserDataEditor from "@/components/setup-form/user-data-editor";
-import { mongoFindUser } from "@/lib/mongoDB-handler";
+import Card from "@/components/ui/card";
 
 async function SetupPage() {
 	const session = await auth();
@@ -33,15 +34,21 @@ async function SetupPage() {
 
 	return (
 		<main>
-			{!session && <SetupControls />}
+			{!session && (
+				<Card>
+					<SetupControls />
+				</Card>
+			)}
 			{session && (
-				<UserDataEditor
-					nameInput={name}
-					usernameInput={username}
-					passwordInput={password}
-					collectionInput={collection}
-					databaseInput={database}
-				/>
+				<Card>
+					<UserDataEditor
+						nameInput={name}
+						usernameInput={username}
+						passwordInput={password}
+						collectionInput={collection}
+						databaseInput={database}
+					/>
+				</Card>
 			)}
 		</main>
 	);

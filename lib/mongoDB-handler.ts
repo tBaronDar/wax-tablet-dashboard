@@ -1,7 +1,7 @@
 "use server";
 
 import { MongoClient } from "mongodb";
-import { UserProfile } from "./types";
+import { Message, UserProfile } from "./types";
 import { redirect } from "next/navigation";
 
 async function mongoConnector(username: string, password: string) {
@@ -57,7 +57,7 @@ export async function mongoMessagesGetter(
 	const db = client.db(database);
 	const messages = db.collection(collection).find();
 	const messagesComplexArray = await messages.toArray();
-	const messagesArray = [];
+	const messagesArray: Message[] = [];
 
 	messagesComplexArray.map((message) =>
 		messagesArray.push({

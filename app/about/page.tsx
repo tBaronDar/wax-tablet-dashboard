@@ -1,11 +1,14 @@
 import React from "react";
 
 import AboutContent from "@/components/about/about-content";
+import Card from "@/components/ui/card";
 
 function AboutPage() {
 	return (
 		<main>
-			<AboutContent />
+			<Card>
+				<AboutContent />
+			</Card>
 		</main>
 	);
 }

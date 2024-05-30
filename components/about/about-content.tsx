@@ -44,7 +44,7 @@ function AboutContent() {
 					<a
 						className={classes.link}
 						target="_blank"
-						href="https://themis-darelis-blogfolio.vercel.app/posts/wax-tablet-release">
+						href="https://themis-darelis-blogfolio.vercel.app/posts">
 						Full changelog here.
 					</a>
 				</li>

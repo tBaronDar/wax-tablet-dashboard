@@ -1,20 +1,20 @@
-import { auth } from "@/auth";
-import HomePageControls from "@/components/home-page/home-page-controls";
-import MessagesTable from "@/components/home-page/messages-table";
-import Dropdown from "@/components/home-page/dropdown";
 import { Suspense } from "react";
-
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
+import { unstable_noStore } from "next/cache";
 import {
 	mongoCollectionsGetter,
 	mongoFindUser,
 	mongoMessagesGetter,
 } from "@/lib/mongoDB-handler";
 
-import { redirect } from "next/navigation";
-import { unstable_noStore } from "next/cache";
+import HomePageControls from "@/components/home-page/home-page-controls";
+import Dropdown from "@/components/home-page/dropdown";
 import LoadingSpinner from "@/components/ui/loading-spinner";
+import MessagesTable from "@/components/home-page/messages/messages-table";
+import Card from "@/components/ui/card";
 
-async function Messages() {
+const Messages: React.FC = async () => {
 	unstable_noStore();
 	const session = await auth();
 
@@ -28,7 +28,7 @@ async function Messages() {
 		);
 		return <MessagesTable messagesIn={messages} />;
 	}
-}
+};
 
 async function HomePage() {
 	unstable_noStore();
@@ -51,11 +51,13 @@ async function HomePage() {
 
 		return (
 			<main>
-				<Dropdown
-					selectedValue={collection}
-					collectionsArray={collections}
-					userEmail={session.user.email}
-				/>
+				<Card>
+					<Dropdown
+						selectedValue={collection}
+						collectionsArray={collections}
+						userEmail={session.user.email}
+					/>
+				</Card>
 
 				<Suspense fallback={<LoadingSpinner />}>
 					<Messages />

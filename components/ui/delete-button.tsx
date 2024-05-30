@@ -1,13 +1,13 @@
 "use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import svgTrash from "@/public/images/trash.svg";
+import LoadingSpinner from "./loading-spinner";
 import { mongoMessageEraser } from "@/lib/mongoDB-handler";
+import svgTrash from "@/public/images/trash.svg";
 
 import classes from "./delete-button.module.css";
-import { useState } from "react";
-import LoadingSpinner from "./loading-spinner";
-import { revalidatePath } from "next/cache";
-import { useRouter } from "next/navigation";
 
 function DeleteButton(props) {
 	const [isLoading, setIsLoading] = useState(false);

@@ -3,6 +3,12 @@
 	padding: var(--size-1);
 	border: none;
 	cursor: pointer;
+	box-shadow: none;
+}
+
+.delete:hover {
+	box-shadow: none;
+	scale: 1.2;
 }
 
 .delete img {

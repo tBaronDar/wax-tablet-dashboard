@@ -1,0 +1,7 @@
+.card {
+	background-color: var(--palette-color3);
+	padding: var(--size-2);
+	width: 100%;
+	height: fit-content;
+	box-shadow: 4px 4px 3px;
+}

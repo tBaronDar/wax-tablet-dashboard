@@ -1,0 +1,72 @@
+.master {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 4px;
+	width: 100%;
+}
+.grid-container {
+	padding: var(--size-4);
+	padding-bottom: var(--size-5);
+	width: 90%;
+	height: auto;
+	display: grid;
+	grid-template-columns: 20% 35% 35%;
+	background-color: var(--palette-color3);
+	gap: 5px;
+	box-shadow: 4px 4px 3px;
+}
+
+.grid-container div {
+	text-align: center;
+}
+
+.number {
+	grid-column: 1;
+	grid-row-start: 3;
+	grid-row-end: 5;
+	font-size: var(--size-5);
+}
+
+.controls {
+	grid-column: 1;
+	grid-row-start: 1;
+	grid-row-end: 3;
+	font-size: var(--size-5);
+}
+
+.email {
+	color: var(--palette-color1);
+	grid-column: 2;
+	grid-row-start: 1;
+	grid-row-end: 3;
+	font-size: var(--size-5);
+}
+
+.name {
+	color: var(--palette-color1);
+	grid-column: 3;
+	grid-row-start: 1;
+	grid-row-end: 3;
+	font-size: var(--size-5);
+}
+
+.message {
+	background-color: var(--palette-color4);
+	max-height: var(--size-40);
+	grid-column-start: 2;
+	grid-column-end: 4;
+	grid-row-start: 3;
+	grid-row-end: 5;
+	text-wrap: balance;
+	overflow: hidden;
+	padding: var(--size-5);
+	font-size: var(--size-4);
+	border-radius: 16px;
+	box-shadow: inset 0px -5px 8px var(--palette-color1);
+}
+
+.message:hover {
+	max-height: fit-content;
+	box-shadow: 5px 5px 10px var(--palette-color1);
+}
