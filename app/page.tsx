@@ -30,7 +30,9 @@ const Messages: React.FC<{
 			userProfileData.database,
 			userProfileData.collection
 		);
-		return <MessagesTable messagesIn={messages} />;
+		return (
+			<MessagesTable messagesIn={messages} userProfile={userProfileData} />
+		);
 	}
 };
 

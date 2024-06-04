@@ -4,6 +4,7 @@ import React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import classes from "./home-page-controls.module.css";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 const HomePageControls: React.FC<{ numberOfItems: number }> = ({
 	numberOfItems,
@@ -44,13 +45,15 @@ const HomePageControls: React.FC<{ numberOfItems: number }> = ({
 	if (+lastQuery <= 0 || !lastQuery) {
 		disablePrev = true;
 		disableNext = false;
-	} else if (+lastQuery - 1 >= numberOfItems / 4) {
+	} else if (+lastQuery >= maxPage) {
 		disablePrev = false;
 		disableNext = true;
 	}
 	return (
 		<div className={classes.controls}>
-			<button onClick={firstPageClickHandler}>First Page</button>
+			<button onClick={firstPageClickHandler} disabled={disablePrev}>
+				First Page
+			</button>
 			<button onClick={prevPageClickHandler} disabled={disablePrev}>
 				Previous Page
 			</button>
@@ -58,9 +61,9 @@ const HomePageControls: React.FC<{ numberOfItems: number }> = ({
 			<button onClick={nextPageClickHandler} disabled={disableNext}>
 				Next Page
 			</button>
-			<button onClick={lastPageClickHandler}>{`Last Page(${
-				maxPage + 1
-			})`}</button>
+			<button
+				onClick={lastPageClickHandler}
+				disabled={disableNext}>{`Last Page(${maxPage + 1})`}</button>
 		</div>
 	);
 };

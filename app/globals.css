@@ -45,6 +45,15 @@ button:hover {
 	text-shadow: 2px 2px 3px var(--palette-color1);
 }
 
+button:disabled,
+button [disabled] {
+	border: 1px solid #999999;
+	background-color: #cccccc;
+	color: #666666;
+	scale: 1;
+	text-shadow: none;
+}
+
 * {
 	box-sizing: border-box;
 	padding: 0;
