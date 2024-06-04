@@ -1,6 +1,6 @@
 "use server";
 
-import { MongoClient } from "mongodb";
+import { Document, MongoClient, WithId } from "mongodb";
 import { Message, UserProfile } from "./types";
 import { redirect } from "next/navigation";
 
@@ -16,6 +16,19 @@ async function mongoConnector(username: string, password: string) {
 	} catch (error) {
 		throw new Error("Couldn't connect");
 	}
+}
+
+export async function mongoGetNumberOfItems(
+	username: string,
+	password: string,
+	database: string,
+	collection: string
+) {
+	const client = await mongoConnector(username, password);
+	const db = client.db(database);
+
+	const itemsInCollection = await db.collection(collection).countDocuments();
+	return itemsInCollection;
 }
 
 export async function mongoCollectionsGetter(
@@ -44,22 +57,27 @@ export async function mongoCollectionsGetter(
 }
 
 export async function mongoMessagesGetter(
+	searchParams: any,
 	username: string,
 	password: string,
 	database: string,
 	collection: string
 ) {
 	const client = await mongoConnector(username, password);
-	if (!client) {
-		return;
-	}
-	//get all messages
+
+	const skipNumber = +searchParams?.p || 0;
+	const itemsPerPage = 4;
 	const db = client.db(database);
-	const messages = db.collection(collection).find();
+
+	const messages = db
+		.collection(collection)
+		.find()
+		.skip(skipNumber * itemsPerPage)
+		.limit(itemsPerPage);
 	const messagesComplexArray = await messages.toArray();
 	const messagesArray: Message[] = [];
 
-	messagesComplexArray.map((message) =>
+	messagesComplexArray.map((message: WithId<Document>) =>
 		messagesArray.push({
 			name: message.name,
 			email: message.email,

@@ -1,4 +1,7 @@
 .controls {
-	display: inline-flex;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 	justify-content: space-evenly;
+	padding-bottom: var(--size-2);
 }

@@ -21,7 +21,7 @@ async function MessagesTable(props) {
 	}
 
 	if (!props.messagesIn || props.messagesIn.length === 0) {
-		return <h2>There are no messages to show</h2>;
+		return <h2 className={classes.master}>There are no messages to show</h2>;
 	}
 }
 

@@ -62,7 +62,7 @@
 	overflow: hidden;
 	padding: var(--size-5);
 	font-size: var(--size-4);
-	border-radius: 16px;
+	border-radius: 12px;
 	box-shadow: inset 0px -5px 8px var(--palette-color1);
 }
 

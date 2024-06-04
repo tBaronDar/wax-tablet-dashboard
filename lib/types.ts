@@ -1,3 +1,5 @@
+import { Document, WithId } from "mongodb";
+
 export interface UserProfile {
 	username: string;
 	password: string;
