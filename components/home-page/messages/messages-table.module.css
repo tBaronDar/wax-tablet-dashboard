@@ -7,29 +7,8 @@
 	padding-bottom: 1%;
 }
 
-.table {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-items: space-between;
-}
-
-.table-head {
-	margin-top: 5%;
-	margin-bottom: 3%;
-}
-
-.table-row {
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	align-items: center;
-	margin-top: 3%;
-}
-
-.table-row th {
-	max-width: 12rem;
-	text-wrap: wrap;
-	text-align: justify;
+@media (max-width: 768px) {
+	.master h2 {
+		font-size: var(--size-12);
+	}
 }

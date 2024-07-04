@@ -7,7 +7,6 @@
 	position: absolute;
 	display: block;
 	z-index: 10;
-
 	min-width: clamp(160px, fit-content, 250px);
 	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
@@ -34,4 +33,18 @@
 	flex-direction: row;
 	padding-top: 5%;
 	padding-bottom: 5%;
+}
+
+@media (max-width: 768px) {
+	.master {
+		font-size: var(--size-3);
+	}
+
+	.listOn {
+		font-size: var(--size-3);
+	}
+
+	.dropdown-button {
+		font-size: var(--size-3);
+	}
 }

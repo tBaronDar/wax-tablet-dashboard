@@ -2,7 +2,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin: 4px;
+	margin-top: var(--size-3);
 	width: 100%;
 }
 .grid-container {
@@ -25,7 +25,7 @@
 	grid-column: 1;
 	grid-row-start: 3;
 	grid-row-end: 5;
-	font-size: var(--size-5);
+	font-size: var(--size-3);
 }
 
 .controls {
@@ -40,7 +40,7 @@
 	grid-column: 2;
 	grid-row-start: 1;
 	grid-row-end: 3;
-	font-size: var(--size-5);
+	font-size: var(--size-3);
 }
 
 .name {
@@ -48,7 +48,7 @@
 	grid-column: 3;
 	grid-row-start: 1;
 	grid-row-end: 3;
-	font-size: var(--size-5);
+	font-size: var(--size-3);
 }
 
 .message {
@@ -61,7 +61,7 @@
 	text-wrap: balance;
 	overflow: hidden;
 	padding: var(--size-5);
-	font-size: var(--size-4);
+	font-size: var(--size-3);
 	border-radius: 12px;
 	box-shadow: inset 0px -5px 8px var(--palette-color1);
 }
@@ -69,4 +69,22 @@
 .message:hover {
 	max-height: fit-content;
 	box-shadow: 5px 5px 10px var(--palette-color1);
+}
+
+@media (min-width: 768px) {
+	.master {
+		margin-top: var(--size-5);
+	}
+	.number {
+		font-size: var(--size-5);
+	}
+	.name {
+		font-size: var(--size-5);
+	}
+	.email {
+		font-size: var(--size-5);
+	}
+	.message {
+		font-size: var(--size-4);
+	}
 }

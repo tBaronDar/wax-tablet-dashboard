@@ -50,20 +50,22 @@ const HomePageControls: React.FC<{ numberOfItems: number }> = ({
 		disableNext = true;
 	}
 	return (
-		<div className={classes.controls}>
-			<button onClick={firstPageClickHandler} disabled={disablePrev}>
-				First Page
-			</button>
-			<button onClick={prevPageClickHandler} disabled={disablePrev}>
-				Previous Page
-			</button>
+		<div className={classes.master}>
+			<div className={classes.controls}>
+				<button onClick={firstPageClickHandler} disabled={disablePrev}>
+					First Page
+				</button>
+				<button onClick={prevPageClickHandler} disabled={disablePrev}>
+					Previous Page
+				</button>
+				<button onClick={nextPageClickHandler} disabled={disableNext}>
+					Next Page
+				</button>
+				<button
+					onClick={lastPageClickHandler}
+					disabled={disableNext}>{`Last Page(${maxPage + 1})`}</button>
+			</div>
 			<p>{`Page ${+query + 1} of ${maxPage + 1}`}</p>
-			<button onClick={nextPageClickHandler} disabled={disableNext}>
-				Next Page
-			</button>
-			<button
-				onClick={lastPageClickHandler}
-				disabled={disableNext}>{`Last Page(${maxPage + 1})`}</button>
 		</div>
 	);
 };

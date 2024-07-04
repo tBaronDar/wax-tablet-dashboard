@@ -13,8 +13,6 @@ function Dropdown(props) {
 	const [buttonText, setButtonText] = useState(props.selectedValue);
 	const [isLoading, setIsLoading] = useState(false);
 
-	const router = useRouter();
-
 	function listToggler() {
 		showList ? setShowList(false) : setShowList(true);
 	}
