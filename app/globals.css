@@ -56,7 +56,7 @@ button [disabled] {
 
 * {
 	box-sizing: border-box;
-	padding: 0;
+	/* padding: 0; */
 }
 
 a {
